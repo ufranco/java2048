@@ -8,18 +8,26 @@ public class GameState {
   private Integer moves;
   private Movement lastMovement;
 
+
   public GameState() {
     this.board = new int[4][4];
     this.moves = 0;
     this.gameOver = false;
   }
 
+  public GameState(int[][] board, Integer moves, Movement lastMovement)
+      {
+        this.board = board;
+        this.moves = moves;
+        this.lastMovement = lastMovement;
+      }
+
   public Integer getMoves() {
     return moves;
   }
 
-  public void setMoves(Integer moves) {
-    this.moves = moves;
+  public void incrementMoves() {
+    this.moves++;
   }
 
   public int[][] getBoard() {
