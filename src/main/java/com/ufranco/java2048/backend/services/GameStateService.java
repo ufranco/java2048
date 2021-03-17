@@ -18,7 +18,12 @@ public class GameStateService {
     return currentState;
   }
 
-  public void gameOver() {
+  public boolean isGameOver(int[][] board) {
+    return false;
+  }
 
+  public int[][] insertValueRandomInFreePosition(int[][] dummyBoard) {
+
+    return dummyBoard;
   }
 }
