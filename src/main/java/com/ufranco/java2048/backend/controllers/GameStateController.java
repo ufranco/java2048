@@ -2,16 +2,17 @@ package com.ufranco.java2048.backend.controllers;
 
 import com.ufranco.java2048.backend.models.GameState;
 import com.ufranco.java2048.backend.services.GameStateService;
+import com.ufranco.java2048.backend.utils.Movement;
 
 public class GameStateController {
 
   GameStateService service;
 
-  public GameState getGameStatus() {
+  public GameState getGameState() {
     return service.getGameState();
   }
 
-  public GameState manageGameStatus(GameState gameStatus) {
-    return service.manageGameState(gameStatus);
+  public GameState updateGameState(Movement movement) {
+    return service.updateGameState(movement);
   }
 }
