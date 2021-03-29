@@ -1,153 +1,199 @@
 package com.ufranco.java2048.backend.services;
 
 import com.ufranco.java2048.backend.models.GameState;
-import com.ufranco.java2048.backend.repositories.ScoreRepository;
-import com.ufranco.java2048.backend.utils.Movement;
-import org.junit.jupiter.api.Assertions;
+import com.ufranco.java2048.backend.repositories.GameStateRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Arrays;
+
+import static com.ufranco.java2048.backend.utils.Movement.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class GameStateTest {
 
   @Mock
-  ScoreRepository repository;
+  GameStateRepository repository;
 
   @InjectMocks
+  @Spy
   GameStateService service;
 
   @Test
-  public void updateBoardUpTest() {
-
-    GameState preManagedState = new GameState(
-      new int[][]{
-        new int[]{0, 0, 0, 0},
-        new int[]{2, 0, 4, 0},
-        new int[]{2, 2, 4, 4},
-        new int[]{0, 0, 2, 0}
-      },
-      5,
-      Movement.UP
-    );
-    GameState postManagedState = service.manageGameState(preManagedState);
-
-    Assertions.assertArrayEquals(
-      postManagedState.getBoard(),
-      new int[][]{
-        new int[]{4, 2, 8, 4},
-        new int[]{0, 0, 2, 0},
-        new int[]{0, 0, 0, 0},
-        new int[]{0, 0, 0, 0}
-      }
+  public void updateGameStateUpMovementTest() {
+    when(repository.getGameState()).thenReturn(
+      new GameState(getDummyBoard(), 5)
     );
 
-    Assertions.assertEquals(
-      postManagedState.getMoves(),
-      preManagedState.getMoves() + 1
+    int[][] expectedSort = new int[][]{
+      new int[]{ 4, 2, 8, 4 },
+      new int[]{ 0, 0, 2, 0 },
+      new int[]{ 0, 0, 0, 0 },
+      new int[]{ 0, 0, 0, 0 }
+    };
+
+    GameState postManagedState = service.updateGameState(UP);
+
+    assertArrayEquals(
+      expectedSort,
+      postManagedState.getBoard()
+    );
+
+    assertEquals(
+      6,
+      postManagedState.getMoves()
     );
   }
 
   @Test
-  public void updateBoardDownTest() {
-    GameState preManagedState = new GameState(
-      new int[][]{
-
-        new int[]{0, 0, 0, 0},
-        new int[]{2, 0, 4, 0},
-        new int[]{2, 2, 4, 4},
-        new int[]{0, 0, 2, 0}
-      },
-      5,
-      Movement.DOWN
+  public void updateGameStateDownMovementTest() {
+    when(repository.getGameState()).thenReturn(
+      new GameState(getDummyBoard(), 11)
     );
 
-    GameState postManagedState = service.manageGameState(preManagedState);
+    int[][] expectedSort = new int[][]{
+      new int[]{ 0, 0, 0, 0 },
+      new int[]{ 0, 0, 0, 0 },
+      new int[]{ 0, 0, 8, 0 },
+      new int[]{ 4, 2, 2, 4 }
+    };
 
-    Assertions.assertArrayEquals(
-      postManagedState.getBoard(),
-      new int[][]{
-        new int[]{0, 0, 0, 0},
-        new int[]{0, 0, 0, 0},
-        new int[]{0, 0, 8, 0},
-        new int[]{4, 2, 2, 4}
-      }
+    GameState postManagedState = service.updateGameState(DOWN);
+
+    assertArrayEquals(
+      expectedSort,
+      postManagedState.getBoard()
     );
 
-    Assertions.assertEquals(
-      postManagedState.getMoves(),
-      preManagedState.getMoves() + 1
+    assertEquals(
+      12,
+      postManagedState.getMoves()
     );
 
   }
 
   @Test
-  public void updateBoardLeftTest() {
-
-    GameState preManagedState = new GameState(
-      new int[][]{
-
-        new int[]{0, 0, 0, 0},
-        new int[]{2, 0, 4, 0},
-        new int[]{2, 2, 4, 4},
-        new int[]{0, 0, 2, 0}
-      },
-      5,
-      Movement.LEFT
+  public void updateGameStateLeftMovementTest() {
+    when(repository.getGameState()).thenReturn(
+      new GameState(getDummyBoard(), 8)
     );
 
-    GameState postManagedState = service.manageGameState(preManagedState);
+    int[][] expectedSort = new int[][]{
+      new int[]{ 0, 0, 0, 0 },
+      new int[]{ 2, 4, 0, 0 },
+      new int[]{ 4, 8, 0, 0 },
+      new int[]{ 2, 0, 0, 0 }
+    };
 
-    Assertions.assertArrayEquals(
-      postManagedState.getBoard(),
-      new int[][]{
-        new int[]{0, 0, 0, 0},
-        new int[]{2, 4, 0, 0},
-        new int[]{4, 8, 0, 0},
-        new int[]{2, 0, 0, 0}
-      }
+    GameState postManagedState = service.updateGameState(LEFT);
+
+    assertArrayEquals(
+      expectedSort,
+      postManagedState.getBoard()
+
     );
 
-    Assertions.assertEquals(
-      postManagedState.getMoves(),
-      preManagedState.getMoves() + 1
-    );
+    assertEquals(
+      9,
+      postManagedState.getMoves()
 
+    );
   }
 
 
   @Test
-  public void updateBoardRightTest() {
-    GameState preManagedState = new GameState(
-      new int[][]{
-
-        new int[]{0, 0, 0, 0},
-        new int[]{2, 0, 4, 0},
-        new int[]{2, 2, 4, 4},
-        new int[]{0, 0, 2, 0}
-      },
-      5,
-      Movement.RIGHT
+  public void updateGameStateRightMovementTest() {
+    when(repository.getGameState()).thenReturn(
+      new GameState(getDummyBoard(), 17)
     );
 
-    GameState postManagedState = service.manageGameState(preManagedState);
+    int[][] expectedSort = new int[][]{
+      new int[]{ 0, 0, 0, 0 },
+      new int[]{ 0, 0, 2, 4 },
+      new int[]{ 0, 0, 4, 8 },
+      new int[]{ 0, 0, 0, 2 }
+    };
 
-    Assertions.assertArrayEquals(
-      postManagedState.getBoard(),
-      new int[][]{
-        new int[]{0, 0, 0, 0},
-        new int[]{0, 0, 2, 4},
-        new int[]{0, 0, 2, 8},
-        new int[]{0, 0, 0, 2}
-      }
+    GameState postManagedState = service.updateGameState(RIGHT);
+
+    assertArrayEquals(
+      expectedSort,
+      postManagedState.getBoard()
+
     );
 
-    Assertions.assertEquals(
-      postManagedState.getMoves(),
-      preManagedState.getMoves() + 1
+    assertEquals(
+      18,
+      postManagedState.getMoves()
     );
 
   }
+
+  @Test
+  public void updateGameOverTrueTest() {
+
+    when(repository.getGameState()).thenReturn(
+      new GameState(getDummyGameOverBoard(), 17)
+    );
+
+    assertTrue(service.updateGameState(DOWN).isGameOver());
+  }
+
+  @Test
+  public void updateGameOverFalseTest() {
+
+    when(repository.getGameState()).thenReturn(
+      new GameState(getDummyBoard(), 17)
+    );
+
+
+    assertFalse(service.updateGameState(DOWN).isGameOver());
+  }
+
+
+  @Test
+  public void insertValueInRandomFreePositionTest() {
+    when(repository.getGameState()).thenReturn(
+      new GameState(getDummyBoard(), 17)
+    );
+
+    int[][] dummyBoardWithNewValue = service.updateGameState(DOWN).getBoard();
+
+    assertEquals(
+      8,
+      getNumberOfZeroes(dummyBoardWithNewValue)
+    );
+  }
+
+  private int[][] getDummyBoard() {
+    return new int[][]{
+      new int[]{ 0, 0, 0, 0 },
+      new int[]{ 2, 0, 4, 0 },
+      new int[]{ 2, 2, 4, 4 },
+      new int[]{ 0, 0, 2, 0 }
+    };
+  }
+
+  private int[][] getDummyGameOverBoard() {
+    return new int[][]{
+      new int[]{ 2, 4, 16, 2 },
+      new int[]{ 4, 2, 8, 128 },
+      new int[]{ 2, 8, 16, 32 },
+      new int[]{ 4, 2, 32, 16 }
+    };
+  }
+
+  private long getNumberOfZeroes(int[][] board) {
+    return Arrays.stream(board)
+      .flatMapToInt(Arrays::stream)
+      .filter(value -> value == 0)
+      .count();
+  }
+
 }

@@ -2,6 +2,7 @@ package com.ufranco.java2048.backend.services;
 
 import com.ufranco.java2048.backend.models.GameState;
 import com.ufranco.java2048.backend.repositories.GameStateRepository;
+import com.ufranco.java2048.backend.utils.Movement;
 
 public class GameStateService {
 
@@ -11,15 +12,16 @@ public class GameStateService {
     return repository.createGameState();
   }
 
-  public GameState manageGameState(GameState gameState) {
-
-    //
-
-    return gameState;
+  public GameState updateGameState(Movement movement) {
+    return null;
   }
 
-  public void gameOver() {
-
+  public boolean isGameOver(int[][] board) {
+    return false;
   }
 
+  public int[][] insertValueRandomInFreePosition(int[][] dummyBoard) {
+
+    return null;
+  }
 }

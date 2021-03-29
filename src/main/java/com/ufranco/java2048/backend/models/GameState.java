@@ -6,7 +6,6 @@ public class GameState {
   private int[][] board;
   private boolean gameOver;
   private Integer moves;
-  private Movement lastMovement;
 
 
   public GameState() {
@@ -15,11 +14,9 @@ public class GameState {
     this.gameOver = false;
   }
 
-  public GameState(int[][] board, Integer moves, Movement lastMovement)
-      {
+  public GameState(int[][] board, Integer moves) {
         this.board = board;
         this.moves = moves;
-        this.lastMovement = lastMovement;
       }
 
   public Integer getMoves() {
