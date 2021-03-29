@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 import static com.ufranco.java2048.backend.utils.Movement.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class GameStateTest {
@@ -38,24 +38,10 @@ public class GameStateTest {
       new int[]{ 0, 0, 0, 0 }
     };
 
-    doReturn(
-      new int[][]{
-        new int[]{ 4, 2, 8, 4 },
-        new int[]{ 0, 2, 2, 0 },
-        new int[]{ 0, 0, 0, 0 },
-        new int[]{ 0, 0, 0, 0 }
-      })
-      .when(service).insertValueRandomInFreePosition(expectedSort);
-
     GameState postManagedState = service.updateGameState(UP);
 
     assertArrayEquals(
-      new int[][]{
-        new int[]{ 4, 2, 8, 4 },
-        new int[]{ 0, 2, 2, 0 },
-        new int[]{ 0, 0, 0, 0 },
-        new int[]{ 0, 0, 0, 0 }
-      },
+      expectedSort,
       postManagedState.getBoard()
     );
 
@@ -78,24 +64,10 @@ public class GameStateTest {
       new int[]{ 4, 2, 2, 4 }
     };
 
-    doReturn(
-      new int[][]{
-        new int[]{ 2, 0, 0, 0 },
-        new int[]{ 0, 0, 0, 0 },
-        new int[]{ 0, 0, 8, 0 },
-        new int[]{ 4, 2, 2, 4 }
-      })
-      .when(service).insertValueRandomInFreePosition(expectedSort);
-
     GameState postManagedState = service.updateGameState(DOWN);
 
     assertArrayEquals(
-      new int[][]{
-        new int[]{ 2, 0, 0, 0 },
-        new int[]{ 0, 0, 0, 0 },
-        new int[]{ 0, 0, 8, 0 },
-        new int[]{ 4, 2, 2, 4 }
-      },
+      expectedSort,
       postManagedState.getBoard()
     );
 
@@ -119,24 +91,10 @@ public class GameStateTest {
       new int[]{ 2, 0, 0, 0 }
     };
 
-    doReturn(
-      new int[][]{
-        new int[]{ 0, 0, 0, 0 },
-        new int[]{ 2, 4, 0, 0 },
-        new int[]{ 4, 8, 0, 2 },
-        new int[]{ 2, 0, 0, 0 }
-      })
-      .when(service).insertValueRandomInFreePosition(expectedSort);
-
     GameState postManagedState = service.updateGameState(LEFT);
 
     assertArrayEquals(
-      new int[][]{
-        new int[]{ 0, 0, 0, 0 },
-        new int[]{ 2, 4, 0, 0 },
-        new int[]{ 4, 8, 0, 2 },
-        new int[]{ 2, 0, 0, 0 }
-      },
+      expectedSort,
       postManagedState.getBoard()
 
     );
@@ -162,25 +120,12 @@ public class GameStateTest {
       new int[]{ 0, 0, 0, 2 }
     };
 
-    doReturn(
-      new int[][]{
-        new int[]{ 0, 0, 0, 0 },
-        new int[]{ 0, 0, 2, 4 },
-        new int[]{ 2, 0, 4, 8 },
-        new int[]{ 0, 0, 0, 2 }
-      })
-      .when(service).insertValueRandomInFreePosition(expectedSort);
-
     GameState postManagedState = service.updateGameState(RIGHT);
 
     assertArrayEquals(
-      postManagedState.getBoard(),
-      new int[][]{
-        new int[]{ 0, 0, 0, 0 },
-        new int[]{ 0, 0, 2, 4 },
-        new int[]{ 2, 0, 4, 8 },
-        new int[]{ 0, 0, 0, 2 }
-      }
+      expectedSort,
+      postManagedState.getBoard()
+
     );
 
     assertEquals(
@@ -191,29 +136,39 @@ public class GameStateTest {
   }
 
   @Test
-  public void updateGameStateCallsGameOverTest() {
-    int[][] board = getDummyBoard();
+  public void updateGameOverTrueTest() {
 
     when(repository.getGameState()).thenReturn(
-      new GameState(board, 17)
+      new GameState(getDummyGameOverBoard(), 17)
     );
 
-    service.updateGameState(UP);
-
-    verify(service, times(1))
-      .isGameOver(board);
-  }
-
-  @Test
-  public void updateGameOverTrueTest() {
-    assertTrue(
-      service.isGameOver(getDummyGameOverBoard())
-    );
+    assertTrue(service.updateGameState(DOWN).isGameOver());
   }
 
   @Test
   public void updateGameOverFalseTest() {
-    assertFalse(service.isGameOver(getDummyBoard()));
+
+    when(repository.getGameState()).thenReturn(
+      new GameState(getDummyBoard(), 17)
+    );
+
+
+    assertFalse(service.updateGameState(DOWN).isGameOver());
+  }
+
+
+  @Test
+  public void insertValueInRandomFreePositionTest() {
+    when(repository.getGameState()).thenReturn(
+      new GameState(getDummyBoard(), 17)
+    );
+
+    int[][] dummyBoardWithNewValue = service.updateGameState(DOWN).getBoard();
+
+    assertEquals(
+      8,
+      getNumberOfZeroes(dummyBoardWithNewValue)
+    );
   }
 
   private int[][] getDummyBoard() {
@@ -234,40 +189,11 @@ public class GameStateTest {
     };
   }
 
-  @Test
-  public void insertValueInRandomFreePositionTest() {
-    int[][] dummyBoardWithNewValue =
-      service.insertValueRandomInFreePosition(
-        getDummyBoard()
-      );
-
-    assertEquals(
-      8,
-      getNumberOfZeroes(dummyBoardWithNewValue)
-    );
-  }
-
   private long getNumberOfZeroes(int[][] board) {
     return Arrays.stream(board)
       .flatMapToInt(Arrays::stream)
       .filter(value -> value == 0)
       .count();
-  }
-
-  @Test
-  public void updateGameStateCallsInsertValueInRandomFreePositionWhenIsGameOverReturnsFalseTest() {
-    when(repository.getGameState()).thenReturn(
-      new GameState(getDummyBoard(), 5)
-    );
-
-    doReturn(false)
-      .when(service).isGameOver(getDummyBoard());
-
-    service.updateGameState(DOWN);
-
-    verify(service, times(1))
-      .insertValueRandomInFreePosition(getDummyBoard());
-
   }
 
 }

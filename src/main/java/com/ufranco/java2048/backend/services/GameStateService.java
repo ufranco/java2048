@@ -13,9 +13,7 @@ public class GameStateService {
   }
 
   public GameState updateGameState(Movement movement) {
-    GameState currentState = repository.getGameState();
-
-    return currentState;
+    return null;
   }
 
   public boolean isGameOver(int[][] board) {
@@ -24,6 +22,6 @@ public class GameStateService {
 
   public int[][] insertValueRandomInFreePosition(int[][] dummyBoard) {
 
-    return dummyBoard;
+    return null;
   }
 }
