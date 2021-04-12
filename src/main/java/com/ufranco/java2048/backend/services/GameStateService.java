@@ -35,6 +35,8 @@ public class GameStateService {
   public GameState updateGameState(Movement movement) {
     var state = repository.get();
 
+    if (state.isGameOver()) return state;
+
     var gameBoard = arrayMatrixToListMatrix(state.getBoard());
     state.setScore(state.getScore() + applyMovement(gameBoard, movement));
 
@@ -77,7 +79,7 @@ public class GameStateService {
 
       for (int x = 0; x < BOARD_SIZE; x++) {
         removeAllZeroes(board.get(x));
-        partialScore = sum(board.get(x));
+        partialScore += sum(board.get(x));
         completeRow(board.get(x), move);
       }
     } else {
@@ -148,11 +150,9 @@ public class GameStateService {
 
   private void completeRow(ArrayList<Integer> row, Movement move) {
     while (row.size() < BOARD_SIZE) {
-      if (move.equals(RIGHT)) {
-        row.add(0, 0);
-      } else {
-        row.add(0);
-      }
+      if (move.equals(RIGHT)) row.add(0, 0);
+      else row.add(0);
+
     }
   }
 
@@ -209,6 +209,7 @@ public class GameStateService {
     var newValue = generateNumber();
 
     var coordinates =  (int) Math.floor(Math.random() * emptyIndexes.size());
+
     int x = emptyIndexes.get(coordinates).getX();
     int y = emptyIndexes.get(coordinates).getY();
 

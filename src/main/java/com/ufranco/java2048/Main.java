@@ -31,12 +31,8 @@ public class Main {
 	public static void main(String[] args) {
 
 		EventQueue.invokeLater(() -> {
-			try {
 				Main window = new Main();
 				window.frame.setVisible(true);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 		});
 	}
 }
