@@ -13,6 +13,7 @@ public class GameStateService {
 
   private final Integer BOARD_SIZE = 4;
   private final GameStateRepository repository;
+  private int partialScore;
 
   public GameStateService() {
     this.repository = new GameStateRepository();
@@ -72,14 +73,13 @@ public class GameStateService {
       .toArray(new Integer[][]{});
   }
 
-  private Integer applyMovement(List<ArrayList<Integer>> board, Movement move) {
-    Integer partialScore = 0;
+  private int applyMovement(List<ArrayList<Integer>> board, Movement move) {
 
     if (move.equals(RIGHT) || move.equals(LEFT)) {
 
       for (int x = 0; x < BOARD_SIZE; x++) {
         removeAllZeroes(board.get(x));
-        partialScore += sum(board.get(x));
+        sum(board.get(x));
         completeRow(board.get(x), move);
       }
     } else {
@@ -91,7 +91,7 @@ public class GameStateService {
         }
       }
     }
-
+    System.out.println(partialScore);
     return partialScore;
   }
 
@@ -101,8 +101,6 @@ public class GameStateService {
     int column
   ) {
 
-    Integer partialScore = 0;
-
     var newColumn = new ArrayList<Integer>();
 
     for (int row = 0; row < BOARD_SIZE; row++) {
@@ -110,7 +108,7 @@ public class GameStateService {
     }
 
     removeAllZeroes(newColumn);
-    partialScore += sum(newColumn);
+    sum(newColumn);
 
     if (dir.equals(UP)) {
       completeRow(newColumn, LEFT);
@@ -127,11 +125,9 @@ public class GameStateService {
     }
   }
 
-  private Integer sum(ArrayList<Integer> row) {
-    if(row.size() < 2) return 0;
+  private void sum(ArrayList<Integer> row) {
 
     int newValue;
-    int partialScore = 0;
 
     for (int index = 0; index < row.size() - 1; index++) {
       var value = row.get(index);
@@ -144,8 +140,6 @@ public class GameStateService {
         row.set(index, newValue);
       }
     }
-
-    return partialScore;
   }
 
   private void completeRow(ArrayList<Integer> row, Movement move) {
