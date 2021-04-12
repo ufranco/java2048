@@ -2,6 +2,7 @@ package com.ufranco.java2048.backend.services;
 
 import com.ufranco.java2048.backend.models.GameState;
 import com.ufranco.java2048.backend.repositories.GameStateRepository;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

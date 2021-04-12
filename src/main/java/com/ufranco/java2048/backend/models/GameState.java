@@ -2,93 +2,152 @@ package com.ufranco.java2048.backend.models;
 
 import com.ufranco.java2048.backend.utils.Movement;
 
+import pruebasTP.tuplaPosiciones;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
 public class GameState {
-  private int[][] board;
-  private boolean gameOver;
-  private Integer moves;
+	  ArrayList<ArrayList<Integer>> board;
+	  private boolean gameOver;
+	  private Integer moves;
+	  private int boardSize;
 
 
-  public GameState() {
-    this.board = new int[4][4];
-    this.moves = 0;
-    this.gameOver = false;
-    LinkedList<tuplaPosiciones> posVacias = posicionesvacias(this.board);
-    posicionarNumberinBoard(this.board,generateNumberBoard(),posVacias);
-  }
+	  public GameState(int boardSize) {
+	    this.board = new ArrayList<ArrayList<Integer>>();
+	    this.moves = 0;
+	    this.gameOver = false;
+	    this.boardSize=boardSize;
+	    fillBoard();
+	    positionNumberinBoard(listEmptyPositions(this.board));
+	    positionNumberinBoard(listEmptyPositions(this.board));
+	  }
+	  
+	  private void fillBoard(){
+		  while(this.board.size() < this.boardSize) {
+			  ArrayList<Integer> row = new ArrayList<Integer>();
+			  while(row.size()<this.boardSize) {
+				  row.add(0);
+			  }
+			  board.add(row);
+		  }
+	  }
+	  private static int generateNumberBoard() {
+	    int number= new Random().nextInt(2);
 
-  public GameState(int[][] board, Integer moves) {
-        this.board = board;
-        this.moves = moves;
-      }
+	    if(number == 0) {
+	      return 2;
+	    }
+	    else {
+	      return 4;
+	    }
+	  }
 
-  private static int generateNumberBoard() {
-    int number= new Random().nextInt(2);
+	  private ArrayList<ArrayList<Integer>> positionNumberinBoard(ArrayList<ListPositions> arrayList){
 
-    if(number == 0) {
-      return 2;
-    }
-    else {
-      return 4;
-    }
-  }
+		int number = generateNumberBoard();
+	    int ubicacion = new Random().nextInt(arrayList.size());
+	    int fila = arrayList.get(ubicacion).fila;
+	    int columna = arrayList.get(ubicacion).columna;
 
-  private static int[][] posicionarNumberinBoard(int[][] board, int number, LinkedList<tuplaPosiciones> posVacias){
+	    if(this.board.get(fila).get(columna) == 0) {
+	      this.board.get(fila).remove(columna);
+	      this.board.get(fila).add(columna,number);
+	    }
+	    
 
-    int ubicacion = new Random().nextInt(posVacias.size());
-    int fila = posVacias.get(ubicacion).fila;
-    int columna = posVacias.get(ubicacion).columna;
+	    return board;
 
-    if(board[fila][columna] == 0) {
-      board[fila][columna] = number;
-    }
+	  }
 
-    return board;
+	  private static ArrayList<ListPositions> listEmptyPositions(ArrayList<ArrayList<Integer>> board){
 
-  }
+	    ArrayList<ListPositions> vacios = new ArrayList<ListPositions>();
 
-  private static LinkedList<tuplaPosiciones> posicionesvacias(int[][] board){
+	    for(int i=0; i < board.size(); i++) {
+	      for(int z=0; z < board.get(i).size(); z++) {
+	        if(board.get(i).get(z)==0) {
+	          ListPositions tupla= new ListPositions(i,z);
+	          vacios.add(tupla);
+	        }
+	      }
+	    }
 
-    LinkedList<tuplaPosiciones> vacios = new LinkedList<tuplaPosiciones>();
+	    return vacios;
+	  }
+	  public void movement(Movement dir) {
+		  
+		  if(dir.equals(Movement.RIGHT) || dir.equals(Movement.LEFT)) {
+			  
+			  for (int i=0;i<this.board.size();i++) {
+				  
+				  if(dir.equals(Movement.RIGHT)) {
+					  	withoutZeros(board.get(i));
+						sum(board.get(i));
+						completeRow(board.get(i),dir);
+				  }
+				  if(dir.equals(Movement.LEFT)) {
+					withoutZeros(board.get(i));
+					sum(board.get(i));
+					completeRow(board.get(i),dir);
+				  }
+			  }
+		  }
+	  }
 
-    for(int i=0; i < board.length; i++) {
-      for(int z=0; z < board[i].length; z++) {
-        if(board[i][z]==0) {
-          tuplaPosiciones tupla= new tuplaPosiciones(i,z);
-          vacios.add(tupla);
-        }
-      }
-    }
+	  private void withoutZeros(ArrayList<Integer> fila) {
+			while(fila.contains(0)) {
+				fila.remove(fila.indexOf(0));
+			}
+		}
+		private void sum(ArrayList<Integer> fila) {
+			int sum=0;
+			
+			for (int i=0; i < (fila.size()-1);i++) {
+				if(fila.get(i).equals(fila.get(i+1))){
+					sum = fila.get(i) + fila.get(i+1);
+					fila.remove(i+1);
+					fila.remove(i);
+					fila.add(i,sum);
+				}
+			}
+		}
+		private void completeRow (ArrayList<Integer> fila,Movement dir) {
+			while(fila.size() < this.board.size()) {
+				if(dir.equals(Movement.RIGHT)) {
+					fila.add(0,0);
+				}
+				else {
+					fila.add(0);
+				}
+			}
+		}
 
-    return vacios;
-  }
+	  public Integer getMoves() {
+	    return moves;
+	  }
 
+	  public void incrementMoves() {
+	    this.moves++;
+	  }
 
-  public Integer getMoves() {
-    return moves;
-  }
+	  public ArrayList<ArrayList<Integer>> getBoard() {
+	    return this.board;
+	  }
 
-  public void incrementMoves() {
-    this.moves++;
-  }
+	  public void setBoard(ArrayList<ArrayList<Integer>> board) {
+	    this.board = board;
+	  }
 
-  public int[][] getBoard() {
-    return this.board;
-  }
+	  public boolean isGameOver() {
+	    return this.gameOver;
+	  }
 
-  public void setBoard(int[][] board) {
-    this.board = board;
-  }
+	  public void setGameOver(boolean isGameOver) {
+	    this.gameOver = isGameOver;
 
-  public boolean isGameOver() {
-    return this.gameOver;
-  }
+	  }
 
-  public void setGameOver(boolean isGameOver) {
-    this.gameOver = isGameOver;
-
-  }
-
-}
+	}
