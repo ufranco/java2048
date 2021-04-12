@@ -1,4 +1,6 @@
-package com.ufranco.java2048.frontend.game;
+package com.ufranco.java2048;
+
+import com.ufranco.java2048.frontend.game.PantallaInicial;
 
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
@@ -7,12 +9,12 @@ import java.awt.Rectangle;
 
 import javax.swing.JFrame;
 
-public class Game {
+public class Main {
 
 
 	private final JFrame frame;
 
-	Game(){
+	Main(){
 		frame = new JFrame();
 		frame.setTitle("2048");
 		frame.getContentPane().setSize(new Dimension(800, 600));
@@ -30,7 +32,7 @@ public class Game {
 
 		EventQueue.invokeLater(() -> {
 			try {
-				Game window = new Game();
+				Main window = new Main();
 				window.frame.setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();
