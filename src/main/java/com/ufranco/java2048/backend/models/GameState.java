@@ -173,8 +173,24 @@ public class GameState {
 	  }
 
 	  public boolean isGameOver() {
-	    return this.gameOver;
-	  }
+			
+			//si perdio el juegador (el casillero esta lleno)
+			if(posicionesvacias(this.board).size() == 0) {
+				return true;
+			}
+			return false;
+		  }
+	  public boolean winner() {
+		for(int x=0;x<this.board.size();x++) {
+			for(int y=0;y<this.board.get(x).size();y++) {
+				if(this.board.get(x).get(y)==2048) {
+					return true;
+				}
+			}
+		}
+		return false;
+	   }
+
 
 	  public void setGameOver(boolean isGameOver) {
 	    this.gameOver = isGameOver;
