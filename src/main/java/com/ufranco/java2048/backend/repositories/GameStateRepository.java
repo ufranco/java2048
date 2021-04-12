@@ -6,22 +6,21 @@ public class GameStateRepository {
 
   private GameState state;
 
-  public GameState getGameState() {
+  public GameState get() {
     return state;
   }
 
-  public GameState createGameState() {
+  public GameState create() {
     state = new GameState();
     return this.state;
   }
 
-  public GameState updateGameState(GameState state) {
+  public void update(GameState state) {
     this.state = state;
-    return this.state;
   }
 
-  public GameState resetGameState() {
-    return createGameState();
+  public GameState reset() {
+    return create();
   }
 
 

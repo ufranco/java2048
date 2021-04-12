@@ -1,27 +1,222 @@
 package com.ufranco.java2048.backend.services;
 
+import com.ufranco.java2048.backend.models.Cell;
 import com.ufranco.java2048.backend.models.GameState;
 import com.ufranco.java2048.backend.repositories.GameStateRepository;
 import com.ufranco.java2048.backend.utils.Movement;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.ufranco.java2048.backend.utils.Movement.*;
+
 public class GameStateService {
 
+  public final Integer BOARD_SIZE = 4;
   GameStateRepository repository;
 
+  public GameStateService(GameStateRepository repository) {
+    this.repository = repository;
+  }
+
   public GameState getGameState() {
-    return repository.createGameState();
+    var state = repository.create();
+    var gameBoard = arrayMatrixToListMatrix(state.getBoard());
+    insertValueRandomInFreePosition(gameBoard);
+    insertValueRandomInFreePosition(gameBoard);
+
+    state.setBoard(listMatrixToArrayMatrix(gameBoard));
+
+    return state;
   }
 
   public GameState updateGameState(Movement movement) {
-    return null;
+    var state = repository.get();
+
+    var gameBoard = arrayMatrixToListMatrix(state.getBoard());
+
+    System.out.println(gameBoard.get(0)+"\n"+gameBoard.get(1)+"\n"+gameBoard.get(2)+"\n"+gameBoard.get(3)+"\n");
+
+    applyMovement(gameBoard, movement);
+
+    System.out.println(gameBoard.get(0)+"\n"+gameBoard.get(1)+"\n"+gameBoard.get(2)+"\n"+gameBoard.get(3)+"\n");
+
+    var gameBoardArray = listMatrixToArrayMatrix(gameBoard);
+    state.setGameOver(isGameOver(gameBoardArray));
+
+    if(state.isGameOver()){
+      isWinner(gameBoard);
+    } else {
+      insertValueRandomInFreePosition(gameBoard);
+    }
+
+      gameBoardArray = listMatrixToArrayMatrix(gameBoard);
+      state.setBoard(listMatrixToArrayMatrix(gameBoard));
+      state.incrementMoves();
+      repository.update(state);
+
+    return state;
   }
 
-  public boolean isGameOver(int[][] board) {
-    return false;
+  private List<ArrayList<Integer>> arrayMatrixToListMatrix(Integer[][] board) {
+    return Arrays.stream(board)
+      .map(array -> new ArrayList<>(Arrays.asList(array)))
+      .toList();
   }
 
-  public int[][] insertValueRandomInFreePosition(int[][] dummyBoard) {
+  private Integer[][] listMatrixToArrayMatrix(List<ArrayList<Integer>> gameBoard) {
+    return gameBoard.stream()
+      .map(a -> a.toArray(new Integer[]{}))
+      .toList()
+      .toArray(new Integer[][]{});
+  }
 
-    return null;
+  private void applyMovement(List<ArrayList<Integer>> board, Movement move) {
+
+    if (move.equals(RIGHT) || move.equals(LEFT)) {
+
+      for (int x = 0; x < BOARD_SIZE; x++) {
+        removeAllZeroes(board.get(x));
+        sum(board.get(x));
+        completeRow(board.get(x), move);
+      }
+    }
+
+    if (move.equals(UP) || move.equals(DOWN)) {
+      var newColumn = new ArrayList<Integer>();
+      for (int y = 0; y < board.size(); y++) {
+        newColumn = upOrDown(board, move, y);
+
+        for (int row = 0; row < board.get(y).size(); row++) {
+          board.get(row).set(y, newColumn.get(row));
+        }
+      }
+    }
+  }
+
+  private ArrayList<Integer> upOrDown(
+    List<ArrayList<Integer>> board,
+    Movement dir,
+    int column
+  ) {
+
+    var newColumn = new ArrayList<Integer>();
+
+    for (int row = 0; row < BOARD_SIZE; row++) {
+      newColumn.add(board.get(row).get(column));
+    }
+
+    removeAllZeroes(newColumn);
+    sum(newColumn);
+
+    if (dir.equals(UP)) {
+      completeRow(newColumn, LEFT);
+    } else {
+      completeRow(newColumn, RIGHT);
+    }
+
+    return newColumn;
+  }
+
+  private void removeAllZeroes(ArrayList<Integer> list) {
+    while (list.contains(0)) {
+      list.remove((Integer) 0);
+    }
+  }
+
+  private void sum(ArrayList<Integer> row) {
+    int newValue;
+
+    for (int index = 0; index < row.size() - 1; index++) {
+      var value = row.get(index);
+      var consequentValue = row.get(index + 1);
+
+      if (value.equals(consequentValue)) {
+        newValue = value + consequentValue;
+        row.remove(index + 1);
+        row.set(index, newValue);
+      }
+    }
+  }
+
+  private void completeRow(ArrayList<Integer> fila, Movement dir) {
+    while (fila.size() < BOARD_SIZE) {
+      if (dir.equals(RIGHT)) {
+        fila.add(0, 0);
+      } else {
+        fila.add(0);
+      }
+    }
+  }
+
+  private boolean isGameOver(Integer[][] board) {
+    var movementLeft = arrayMatrixToListMatrix(board);
+    var movementRight = arrayMatrixToListMatrix(board);
+    var movementUp = arrayMatrixToListMatrix(board);
+    var movementDown = arrayMatrixToListMatrix(board);
+
+    applyMovement(movementLeft, LEFT);
+    applyMovement(movementRight, RIGHT);
+    applyMovement(movementUp, UP);
+    applyMovement(movementDown, DOWN);
+
+
+
+
+
+    return getEmptyIndexes(movementUp).isEmpty()
+      && movementDown.equals(movementUp)
+      && movementUp.equals(movementLeft)
+      && movementLeft.equals(movementRight);
+
+
+  }
+
+
+  public boolean isWinner(List<ArrayList<Integer>> board) {
+
+    boolean winner = false;
+
+    for(int x = 0; x < BOARD_SIZE; x++) {
+
+      for(int y = 0; y < BOARD_SIZE; y++) {
+        winner = winner || board.get(x).get(y) == 2048;
+      }
+    }
+    return winner;
+  }
+
+
+  private LinkedList<Cell> getEmptyIndexes(List<ArrayList<Integer>> board) {
+    var emptyIndexes = new LinkedList<Cell>();
+
+    for (int x = 0; x < BOARD_SIZE; x++) {
+      for (int y = 0; y < BOARD_SIZE; y++) {
+        if (board.get(x).get(y) == 0) {
+          Cell index = new Cell(x, y);
+          emptyIndexes.add(index);
+        }
+      }
+    }
+
+    return emptyIndexes;
+  }
+
+  private Integer generateNumber() {
+    return (int) Math.floor(Math.random() + 1.5) * 2;
+  }
+
+  private void insertValueRandomInFreePosition(List<ArrayList<Integer>> board) {
+    var emptyIndexes = getEmptyIndexes(board);
+    var newValue = generateNumber();
+
+    int coordinates = new Random().nextInt(emptyIndexes.size());
+    int x = emptyIndexes.get(coordinates).getX();
+    int y = emptyIndexes.get(coordinates).getY();
+
+    if (board.get(x).get(y) == 0) {
+      board.get(x).set(y, newValue);
+    }
+
   }
 }
