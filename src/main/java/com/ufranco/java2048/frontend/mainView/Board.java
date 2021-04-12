@@ -24,7 +24,7 @@ public class Board {
 
     private void fillArray() {
         var tiles = new ArrayList<JLabel>();
-        var board = stateService.getGameState().getBoard();
+        var board = stateService.createGameState().getBoard();
         int count = 0;
 
 			for (Integer[] integers : board) {
@@ -48,8 +48,8 @@ public class Board {
     }
 
     public void updateBoard(Integer[][] values, JPanel panel) {
-        for (int x = 0; x< values.length; x++) {
-        	for(int y = 0;y< values.length; y++) {
+        for (int x = 0; x < values.length; x++) {
+        	for(int y = 0; y < values.length; y++) {
 	        	var label = (JLabel)panel.getComponent(x);
 	        	changeTile(label, values[x][y]);
 	            int green = label.getForeground().getGreen() - 10;

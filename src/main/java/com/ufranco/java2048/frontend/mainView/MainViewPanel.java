@@ -47,7 +47,7 @@ public class MainViewPanel {
     }
     private void isOver() {
 
-    	if(stateService.getGameState().isGameOver()) {
+    	if(stateService.createGameState().isGameOver()) {
     		GameOver go = new GameOver();
     		this.mainPanel.getParent().add(go.getPanel());
     		this.mainPanel.setVisible(false);

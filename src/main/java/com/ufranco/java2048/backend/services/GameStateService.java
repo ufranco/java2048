@@ -22,7 +22,7 @@ public class GameStateService {
     this.repository = repository;
   }
 
-  public GameState getGameState() {
+  public GameState createGameState() {
     var state = repository.create();
     var gameBoard = arrayMatrixToListMatrix(state.getBoard());
     insertValueRandomInFreePosition(gameBoard);
