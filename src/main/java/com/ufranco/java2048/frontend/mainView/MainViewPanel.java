@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
  *
  * @author victo
  */
+
 public class MainViewPanel {
 	private final JPanel mainPanel;
 	private final JPanel boardPanel;

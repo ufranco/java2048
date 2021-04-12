@@ -43,11 +43,12 @@ public class GameOver {
 	}
 	private void backToMainMenu() {
 		PantallaInicial pi = new PantallaInicial();
-		this.panel.getParent().add(pi.getPanel());
-		this.panel.setVisible(false);
+		panel.getParent().add(pi.getPanel());
+
+		panel.setVisible(false);
 	}
 
 	public JPanel getPanel() {
-		return this.panel;
+		return panel;
 	}
 }

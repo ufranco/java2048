@@ -15,6 +15,7 @@ public class GameStateRepository {
     state.setBoard(generateNewBoard());
     state.setMoves(0);
     state.setGameOver(false);
+    state.setWinner(false);
     state.setScore(0);
 
     return deepCopy(state);

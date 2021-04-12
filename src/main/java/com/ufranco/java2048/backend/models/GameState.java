@@ -8,6 +8,7 @@ public class GameState {
 	private boolean gameOver;
 	private Integer moves;
 	private Integer score;
+	private boolean winner;
 
 	public void setMoves(Integer moves) {
 		this.moves = moves;
@@ -44,5 +45,13 @@ public class GameState {
 
 	public void setScore(Integer score) {
 		this.score = score;
+	}
+
+	public boolean isWinner() {
+		return winner;
+	}
+
+	public void setWinner(boolean winner) {
+		this.winner = winner;
 	}
 }

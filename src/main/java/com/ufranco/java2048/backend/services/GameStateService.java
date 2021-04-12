@@ -18,10 +18,6 @@ public class GameStateService {
     this.repository = new GameStateRepository();
   }
 
-  public GameStateService(GameStateRepository repository) {
-    this.repository = repository;
-  }
-
   public GameState createGameState() {
     var state = repository.create();
     var gameBoard = arrayMatrixToListMatrix(state.getBoard());
@@ -44,11 +40,11 @@ public class GameStateService {
 
     state.setGameOver(
       getEmptyIndexes(gameBoard).isEmpty()
-        && isGameOver(listMatrixToArrayMatrix(gameBoard))
+      && isGameOver(listMatrixToArrayMatrix(gameBoard))
     );
 
-    if(state.isGameOver()){
-      isWinner(gameBoard);
+    if(state.isGameOver()) {
+      state.setWinner(isWinner(gameBoard));
     } else {
       insertValueRandomInFreePosition(gameBoard);
     }
@@ -84,15 +80,12 @@ public class GameStateService {
         partialScore = sum(board.get(x));
         completeRow(board.get(x), move);
       }
-    }
-
-    if (move.equals(UP) || move.equals(DOWN)) {
+    } else {
       var newColumn = new ArrayList<Integer>();
       for (int y = 0; y < BOARD_SIZE; y++) {
         newColumn = upOrDown(board, move, y);
-
-        for (int row = 0; row < board.get(y).size(); row++) {
-          board.get(row).set(y, newColumn.get(row));
+        for (int x = 0; x < board.get(y).size(); x++) {
+          board.get(x).set(y, newColumn.get(x));
         }
       }
     }
