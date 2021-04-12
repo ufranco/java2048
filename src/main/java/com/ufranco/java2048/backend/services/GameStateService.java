@@ -46,7 +46,6 @@ public class GameStateService {
     );
 
     if(state.isGameOver()) {
-      System.out.println("aaa");
       state.setWinner(isWinner(gameBoard));
     } else {
       insertValueRandomInFreePosition(gameBoard);
@@ -151,11 +150,9 @@ public class GameStateService {
 
   private void completeRow(ArrayList<Integer> row, Movement move) {
     while (row.size() < BOARD_SIZE) {
-      if (move.equals(RIGHT)) {
-        row.add(0, 0);
-      } else {
-        row.add(0);
-      }
+      if (move.equals(RIGHT)) row.add(0, 0);
+      else row.add(0);
+
     }
   }
 
@@ -212,6 +209,7 @@ public class GameStateService {
     var newValue = generateNumber();
 
     var coordinates =  (int) Math.floor(Math.random() * emptyIndexes.size());
+
     int x = emptyIndexes.get(coordinates).getX();
     int y = emptyIndexes.get(coordinates).getY();
 
