@@ -95,7 +95,38 @@ public class GameState {
 				  }
 			  }
 		  }
+		  
+		  if(dir.equals(Movement.UP) || dir.equals(Movement.DOWN)) {
+			  ArrayList<Integer> newColumn = new ArrayList<Integer>();
+			  for(int column=0;column<this.board.size();column++) {
+				  newColumn = upOrDown(dir, column); 
+				  
+				  for(int row=0;row < this.board.get(columna).size();row++){
+					  this.board.get(row).remove(column);
+					  this.board.get(row).add(column,newColumn.get(row));
+				  }
+			  }
+		  }
 	  }
+	  
+	  private ArrayList<Integer> upOrDown(Movement dir,int column) {
+		  
+			ArrayList<Integer> newColumn = new ArrayList<Integer>();	  
+			for(int row=0;row < this.board.get(column).size();row++) {
+				newColumn.add(this.board.get(row).get(column));
+			}
+			withoutZeros(newColumn);
+			sum(newColumn);
+			
+			if(dir.equals(Movement.UP)) {
+				completeRow(newColumn, Movement.LEFT);
+			}
+			else {
+				completeRow(newColumn, Movement.RIGHT);
+			}
+			
+			return newColumn;
+		  }
 
 	  private void withoutZeros(ArrayList<Integer> fila) {
 			while(fila.contains(0)) {
