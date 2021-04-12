@@ -13,7 +13,7 @@ public class GameStateRepository {
     state = null;
     state = new GameState();
     state.setBoard(generateNewBoard());
-    state.setMoves(0);
+    state.setMoveCount(0);
     state.setGameOver(false);
     state.setWinner(false);
     state.setScore(0);
@@ -29,7 +29,7 @@ public class GameStateRepository {
   public GameState deepCopy(GameState gameState) {
     var newGameState = new GameState();
     newGameState.setScore(gameState.getScore());
-    newGameState.setMoves(gameState.getMoves());
+    newGameState.setMoveCount(gameState.getMoveCount());
     newGameState.setGameOver(gameState.isGameOver());
 
     Integer[][] board = gameState.getBoard();

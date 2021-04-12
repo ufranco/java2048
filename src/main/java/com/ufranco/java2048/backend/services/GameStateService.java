@@ -44,6 +44,7 @@ public class GameStateService {
     );
 
     if(state.isGameOver()) {
+      System.out.println("aaa");
       state.setWinner(isWinner(gameBoard));
     } else {
       insertValueRandomInFreePosition(gameBoard);
@@ -77,7 +78,7 @@ public class GameStateService {
 
       for (int x = 0; x < BOARD_SIZE; x++) {
         removeAllZeroes(board.get(x));
-        partialScore = sum(board.get(x));
+        partialScore += sum(board.get(x));
         completeRow(board.get(x), move);
       }
     } else {

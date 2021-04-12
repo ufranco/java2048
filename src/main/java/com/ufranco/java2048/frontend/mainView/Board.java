@@ -73,34 +73,5 @@ public class Board {
 			}
 		}
 	}
-	public void moveTiles(KeyEvent keyEvent, JPanel boardPanel) {
-		Movement movement = null;
-		var validKey = false;
-
-		switch (keyEvent.getKeyCode()) {
-			case VK_W, VK_UP -> {
-				movement = UP;
-				validKey = true;
-			}
-			case VK_S, VK_DOWN -> {
-				movement = DOWN;
-				validKey = true;
-			}
-			case VK_A, VK_LEFT -> {
-				movement = LEFT;
-				validKey = true;
-			}
-			case VK_D, VK_RIGHT -> {
-				movement = RIGHT;
-				validKey = true;
-			}
-
-		}
-
-		if(validKey) {
-			var board = stateService.updateGameState(movement).getBoard();
-			updateBoard(board, boardPanel);
-		}
-	}
 
 }

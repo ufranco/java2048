@@ -1,25 +1,22 @@
 package com.ufranco.java2048.backend.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class GameState {
 	Integer[][] board;
 	private boolean gameOver;
-	private Integer moves;
+	private Integer moveCount;
 	private Integer score;
 	private boolean winner;
 
-	public void setMoves(Integer moves) {
-		this.moves = moves;
+	public void setMoveCount(Integer moveCount) {
+		this.moveCount = moveCount;
 	}
 
-	public Integer getMoves() {
-		return moves;
+	public Integer getMoveCount() {
+		return moveCount;
 	}
 
 	public void incrementMoves() {
-		this.moves++;
+		this.moveCount++;
 	}
 
 	public Integer[][] getBoard() {

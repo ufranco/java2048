@@ -1,11 +1,17 @@
 package com.ufranco.java2048.frontend.mainView;
 
 import com.ufranco.java2048.backend.services.GameStateService;
+import com.ufranco.java2048.backend.utils.Movement;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
+import static com.ufranco.java2048.backend.utils.Movement.*;
+import static com.ufranco.java2048.backend.utils.Movement.RIGHT;
+import static java.awt.event.KeyEvent.*;
+import static java.awt.event.KeyEvent.VK_RIGHT;
 
 /**
  *
@@ -40,19 +46,69 @@ public class MainViewPanel {
 			mainPanel.addKeyListener(new KeyAdapter() {
 
 			public void keyPressed(KeyEvent KE) {
-				isOver();
-				board.moveTiles(KE, boardPanel);
+				moveTiles(KE, boardPanel);
 			}
 		});
+
     }
-    private void isOver() {
-    	/*if(stateService.createGameState().isGameOver()) {
-    		var gameOver = new GameOver();
-    		mainPanel.getParent().add(gameOver.getPanel());
-    		mainPanel.setVisible(false);
-    	}*/
-    }
-    public JPanel getPanel() {
+
+	public void moveTiles(KeyEvent keyEvent, JPanel boardPanel) {
+		Movement movement = null;
+		var validKey = false;
+
+		switch (keyEvent.getKeyCode()) {
+			case VK_W, VK_UP -> {
+				movement = UP;
+				validKey = true;
+			}
+			case VK_S, VK_DOWN -> {
+				movement = DOWN;
+				validKey = true;
+			}
+			case VK_A, VK_LEFT -> {
+				movement = LEFT;
+				validKey = true;
+			}
+			case VK_D, VK_RIGHT -> {
+				movement = RIGHT;
+				validKey = true;
+			}
+
+		}
+
+		if(validKey) {
+			var response = stateService.updateGameState(movement);
+			board.updateBoard(response.getBoard(), boardPanel);
+
+			displayScore(response.getScore());
+
+			displayMoveCount(response.getMoveCount());
+
+			if(response.isGameOver()) {
+				if (response.isWinner()) displayWinPanel();
+			 	else displayGameOver();
+
+			}
+		}
+	}
+
+	private void displayGameOver() {
+
+	}
+
+	private void displayWinPanel() {
+
+	}
+
+	private void displayScore(Integer score) {
+
+	}
+
+	private void displayMoveCount(Integer moveCount) {
+
+	}
+
+	public JPanel getPanel() {
     	return mainPanel;
     }
 }
