@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ufranco</groupId>
@@ -6,33 +8,40 @@
     <version>1.0.0</version>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>16</java.version>
     </properties>
-    <developers>
 
+    <developers>
         <developer>
-            <id>ufranco</id>
-            <roles>Back developer</roles>
+            <id>Ulises Javier Franco</id>
+            <roles>
+                <role>Back developer</role>
+            </roles>
             <url>github.com/ufranco</url>
         </developer>
 
         <developer>
-            <id></id>
-            <roles></roles>
-            <url></url>
+            <id>Gastón Ezequiel Mansilla</id>
+            <roles>
+               <role>Back developer</role>
+            </roles>
+            <url>github.com/SrParzival</url>
         </developer>
 
         <developer>
-            <id></id>
-            <roles></roles>
-            <url></url>
+            <id>Victor Santiago Florentin</id>
+            <roles>
+                <role>Front developer</role>
+            </roles>
+            <url>github.com/victorFlorentin</url>
         </developer>
 
         <developer>
-            <id></id>
-            <roles></roles>
-            <url></url>
+            <id>Martín Leguizamon</id>
+            <roles>
+                <role>Front developer</role>
+            </roles>
+            <url>github.com/legui04</url>
         </developer>
     </developers>
 
