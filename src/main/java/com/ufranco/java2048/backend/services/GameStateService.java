@@ -35,6 +35,8 @@ public class GameStateService {
   public GameState updateGameState(Movement movement) {
     var state = repository.get();
 
+    if (state.isGameOver()) return state;
+
     var gameBoard = arrayMatrixToListMatrix(state.getBoard());
     state.setScore(state.getScore() + applyMovement(gameBoard, movement));
 

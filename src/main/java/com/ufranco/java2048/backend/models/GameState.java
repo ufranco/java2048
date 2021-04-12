@@ -1,5 +1,8 @@
 package com.ufranco.java2048.backend.models;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public class GameState {
 	Integer[][] board;
 	private boolean gameOver;
@@ -50,5 +53,16 @@ public class GameState {
 
 	public void setWinner(boolean winner) {
 		this.winner = winner;
+	}
+
+	@Override
+	public String toString() {
+		return "GameState{" +
+			"board = \n" + Arrays.stream(board).map(arr -> Arrays.toString(arr)+"\n").collect(Collectors.joining())+
+			"gameOver = " + gameOver +
+			",\n moveCount = " + moveCount +
+			",\n score = " + score +
+			",\n winner = " + winner +
+			"}\n";
 	}
 }
