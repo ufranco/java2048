@@ -24,25 +24,61 @@ public class GameStateService {
 
   public GameState createGameState() {
     var state = repository.create();
+
+/*    System.out.println( "post fetch\n" +
+      Arrays.toString(state.getBoard()[0])
+        +"\n"+Arrays.toString(state.getBoard()[1])
+        +"\n"+Arrays.toString(state.getBoard()[2])
+        +"\n"+Arrays.toString(state.getBoard()[3])+"\n"
+    );*/
+
+
     var gameBoard = arrayMatrixToListMatrix(state.getBoard());
+
+/*    System.out.println( "post transform 1\n" +
+      gameBoard.get(0)
+        +"\n"+gameBoard.get(1)
+        +"\n"+gameBoard.get(2)
+        +"\n"+gameBoard.get(3)+"\n"
+    );*/
+
+
     insertValueRandomInFreePosition(gameBoard);
     insertValueRandomInFreePosition(gameBoard);
 
+/*    System.out.println( "post transform 2\n" +
+      gameBoard.get(0)
+        +"\n"+gameBoard.get(1)
+        +"\n"+gameBoard.get(2)
+        +"\n"+gameBoard.get(3)+"\n"
+    );*/
+
     state.setBoard(listMatrixToArrayMatrix(gameBoard));
+
+/*    System.out.println( "pre persist \n" +
+      Arrays.toString(state.getBoard()[0])
+        +"\n"+Arrays.toString(state.getBoard()[1])
+        +"\n"+Arrays.toString(state.getBoard()[2])
+        +"\n"+Arrays.toString(state.getBoard()[3])+"\n"
+    );*/
+
+    repository.update(state);
 
     return state;
   }
 
   public GameState updateGameState(Movement movement) {
     var state = repository.get();
+/*
+    System.out.println( "post fetch\n" +
+      Arrays.toString(state.getBoard()[0])
+      +"\n"+Arrays.toString(state.getBoard()[1])
+      +"\n"+Arrays.toString(state.getBoard()[2])
+      +"\n"+Arrays.toString(state.getBoard()[3])+"\n"
+    );*/
 
     var gameBoard = arrayMatrixToListMatrix(state.getBoard());
-
-    System.out.println(gameBoard.get(0)+"\n"+gameBoard.get(1)+"\n"+gameBoard.get(2)+"\n"+gameBoard.get(3)+"\n");
-
     state.setScore(state.getScore() + applyMovement(gameBoard, movement));
-
-    System.out.println(gameBoard.get(0)+"\n"+gameBoard.get(1)+"\n"+gameBoard.get(2)+"\n"+gameBoard.get(3)+"\n");
 
     state.setGameOver(
       isGameOver(listMatrixToArrayMatrix(gameBoard))
@@ -54,9 +90,16 @@ public class GameStateService {
       insertValueRandomInFreePosition(gameBoard);
     }
 
-
     state.setBoard(listMatrixToArrayMatrix(gameBoard));
+
+ /*   System.out.println( "pre persist\n" +
+      Arrays.toString(state.getBoard()[0])
+        +"\n"+Arrays.toString(state.getBoard()[1])
+        +"\n"+Arrays.toString(state.getBoard()[2])
+        +"\n"+Arrays.toString(state.getBoard()[3])+"\n"
+    );*/
     state.incrementMoves();
+
     repository.update(state);
 
     return state;
@@ -134,6 +177,7 @@ public class GameStateService {
   }
 
   private Integer sum(ArrayList<Integer> row) {
+    if(row.size() < 2) return 0;
     int newValue = 0;
     int partialScore = 0;
 
@@ -152,12 +196,12 @@ public class GameStateService {
     return partialScore;
   }
 
-  private void completeRow(ArrayList<Integer> fila, Movement dir) {
-    while (fila.size() < BOARD_SIZE) {
-      if (dir.equals(RIGHT)) {
-        fila.add(0, 0);
+  private void completeRow(ArrayList<Integer> row, Movement move) {
+    while (row.size() < BOARD_SIZE) {
+      if (move.equals(RIGHT)) {
+        row.add(0, 0);
       } else {
-        fila.add(0);
+        row.add(0);
       }
     }
   }
@@ -173,20 +217,15 @@ public class GameStateService {
     applyMovement(movementUp, UP);
     applyMovement(movementDown, DOWN);
 
-
-
-
-
     return getEmptyIndexes(movementUp).isEmpty()
       && movementDown.equals(movementUp)
       && movementUp.equals(movementLeft)
       && movementLeft.equals(movementRight);
 
-
   }
 
 
-  public boolean isWinner(List<ArrayList<Integer>> board) {
+  private boolean isWinner(List<ArrayList<Integer>> board) {
 
     boolean winner = false;
 
@@ -215,15 +254,12 @@ public class GameStateService {
     return emptyIndexes;
   }
 
-  private Integer generateNumber() {
-    return (int) Math.floor(Math.random() + 1.5) * 2;
-  }
 
   private void insertValueRandomInFreePosition(List<ArrayList<Integer>> board) {
     var emptyIndexes = getEmptyIndexes(board);
     var newValue = generateNumber();
 
-    int coordinates = new Random().nextInt(emptyIndexes.size());
+    var coordinates =  (int) Math.floor(Math.random() * emptyIndexes.size());
     int x = emptyIndexes.get(coordinates).getX();
     int y = emptyIndexes.get(coordinates).getY();
 
@@ -232,4 +268,9 @@ public class GameStateService {
     }
 
   }
+
+  private Integer generateNumber() {
+    return Math.random() * 10 <= 9 ? 2 : 4;
+  }
+
 }

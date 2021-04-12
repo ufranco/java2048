@@ -24,34 +24,34 @@ public class PantallaInicial {
 		setUI(panel);
 	}
 	public void setUI(JPanel panel) {
-		JButton BotonJuegoNuevo = new JButton("");
-		BotonJuegoNuevo.setIcon(CargarImagenes.cargarIcon("res\\juego nuevo.png",163, 70));
-		BotonJuegoNuevo.setForeground(Color.BLACK);
-		BotonJuegoNuevo.addMouseListener(new MouseAdapter() {
+		JButton newGameButton = new JButton("");
+		newGameButton.setIcon(CargarImagenes.cargarIcon("res\\juego nuevo.png",163, 70));
+		newGameButton.setForeground(Color.BLACK);
+		newGameButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				empezarPartida(panel);
 			}
 		});
-		BotonJuegoNuevo.addKeyListener(new KeyAdapter() {
+		newGameButton.addKeyListener(new KeyAdapter() {
 
 			@Override
 			public void keyPressed(KeyEvent KE) {;
 				empezarPartida(panel);
 			}
 		});
-		BotonJuegoNuevo.setFont(new Font("customFont", Font.BOLD | Font.ITALIC, 15));
-		BotonJuegoNuevo.setBackground(Color.LIGHT_GRAY);
-		BotonJuegoNuevo.setBounds(332, 279, 163, 70);
-		panel.add(BotonJuegoNuevo);
+		newGameButton.setFont(new Font("customFont", Font.BOLD | Font.ITALIC, 15));
+		newGameButton.setBackground(Color.LIGHT_GRAY);
+		newGameButton.setBounds(332, 279, 163, 70);
+		panel.add(newGameButton);
 
-		JLabel CartelBienvenida = new JLabel("");
-		CartelBienvenida.setBackground(Color.GRAY);
-		CartelBienvenida.setIcon(CargarImagenes.cargarIcon("res\\bienvenido.png",418, 173));
-		CartelBienvenida.setForeground(Color.BLACK);
-		CartelBienvenida.setFont(new Font("customFont", Font.BOLD | Font.ITALIC, 24));
-		CartelBienvenida.setBounds(207, 34, 418, 173);
-		panel.add(CartelBienvenida);
+		JLabel WelcomeSign = new JLabel("");
+		WelcomeSign.setBackground(Color.GRAY);
+		WelcomeSign.setIcon(CargarImagenes.cargarIcon("res\\bienvenido.png",418, 173));
+		WelcomeSign.setForeground(Color.BLACK);
+		WelcomeSign.setFont(new Font("customFont", Font.BOLD | Font.ITALIC, 24));
+		WelcomeSign.setBounds(207, 34, 418, 173);
+		panel.add(WelcomeSign);
 
 		JLabel ImagenCadenaSuperior = new JLabel("New label");
 		ImagenCadenaSuperior.setIcon(CargarImagenes.cargarIcon("res\\parte superior.png", 172, 132));

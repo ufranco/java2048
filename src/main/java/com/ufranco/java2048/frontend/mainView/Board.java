@@ -21,13 +21,13 @@ public class Board {
 
     Board(JPanel panel, GameStateService stateService){
     	this.stateService = stateService;
-        fillArray();
-        createBoard(panel);
+			fillArray();
+			createBoard(panel);
     }
 
     private void fillArray() {
-        var board = stateService.createGameState().getBoard();
-        int count = 0;
+			var board = stateService.createGameState().getBoard();
+			int count = 0;
 
 			for (Integer[] integers : board) {
 				for (Integer integer : integers) {
@@ -49,11 +49,11 @@ public class Board {
         tiles.forEach(panel::add);
     }
 
-    public void updateBoard(Integer[][] values, JPanel panel) {
-        for (int x = 0; x < values.length; x++) {
-        	for(int y = 0; y < values.length; y++) {
+    public void updateBoard(Integer[][] boardValues, JPanel panel) {
+        for (int x = 0; x < boardValues.length; x++) {
+        	for(int y = 0; y < boardValues.length; y++) {
 	        	var label = (JLabel)panel.getComponent(x);
-	        	changeTile(label, values[x][y]);
+	        	changeTile(label, boardValues[x][y]);
 	            int green = label.getForeground().getGreen() - 10;
 	            if (green > 0)
 	            	label.setForeground(new Color(255, green, 0));
@@ -66,8 +66,7 @@ public class Board {
     		if(value == 0) {
     			label.setText("");
     			label.setIcon(CargarImagenes.cargarIcon("res\\tile0.png", 128, 128));
-    		}
-    		else {
+    		} else {
     			label.setText(value.toString());
     			label.setIcon(tile);
     		}
@@ -76,6 +75,7 @@ public class Board {
 	public void moveTiles(KeyEvent keyEvent, JPanel boardPanel) {
 		Movement movement = null;
 		var validKey = false;
+
 		switch (keyEvent.getKeyCode()) {
 			case VK_W, VK_UP -> {
 				movement = UP;
@@ -97,6 +97,7 @@ public class Board {
 		}
 
 		if(validKey) {
+			System.out.println(keyEvent.paramString());
 			var board = stateService.updateGameState(movement).getBoard();
 			updateBoard(board, boardPanel);
 		}

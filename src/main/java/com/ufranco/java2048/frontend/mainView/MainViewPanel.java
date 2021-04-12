@@ -46,15 +46,14 @@ public class MainViewPanel {
 		});
     }
     private void isOver() {
-
-    	if(stateService.createGameState().isGameOver()) {
+    	/*if(stateService.createGameState().isGameOver()) {
     		var gameOver = new GameOver();
-    		this.mainPanel.getParent().add(gameOver.getPanel());
-    		this.mainPanel.setVisible(false);
-    	}
+    		mainPanel.getParent().add(gameOver.getPanel());
+    		mainPanel.setVisible(false);
+    	}*/
     }
     public JPanel getPanel() {
-    	return this.mainPanel;
+    	return mainPanel;
     }
 }
 
