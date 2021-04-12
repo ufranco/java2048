@@ -20,18 +20,18 @@ public class MainViewPanel {
 
 	public MainViewPanel() {
 		stateService = new GameStateService();
-		this.mainPanel = new JPanel();
+		mainPanel = new JPanel();
 		mainPanel.setBounds(0, 0, 800, 600);
 		mainPanel.setLayout(null);
 		mainPanel.setBackground(new Color(0,70,0));
 
-		this.boardPanel = new JPanel();
-			boardPanel.setLayout(new java.awt.GridLayout(4, 4, 2, 2));
-			boardPanel.setBounds(144, 32, 512, 512);
-			boardPanel.setBackground(new Color(70, 40, 0));
-			mainPanel.add(boardPanel);
-			this.board = new Board(boardPanel, stateService);
-			addListener();
+		boardPanel = new JPanel();
+		boardPanel.setLayout(new java.awt.GridLayout(4, 4, 2, 2));
+		boardPanel.setBounds(144, 32, 512, 512);
+		boardPanel.setBackground(new Color(70, 40, 0));
+		mainPanel.add(boardPanel);
+		board = new Board(boardPanel, stateService);
+		addListener();
 	}
 
     public void addListener() {
@@ -48,8 +48,8 @@ public class MainViewPanel {
     private void isOver() {
 
     	if(stateService.createGameState().isGameOver()) {
-    		GameOver go = new GameOver();
-    		this.mainPanel.getParent().add(go.getPanel());
+    		var gameOver = new GameOver();
+    		this.mainPanel.getParent().add(gameOver.getPanel());
     		this.mainPanel.setVisible(false);
     	}
     }
