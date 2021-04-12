@@ -1,7 +1,6 @@
 package com.ufranco.java2048.frontend.mainView;
 
 import com.ufranco.java2048.backend.services.GameStateService;
-import com.ufranco.java2048.frontend.game.GameOver;
 
 import javax.swing.*;
 import java.awt.*;

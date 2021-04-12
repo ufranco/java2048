@@ -11,8 +11,8 @@ import static com.ufranco.java2048.backend.utils.Movement.*;
 
 public class GameStateService {
 
-  public final Integer BOARD_SIZE = 4;
-  GameStateRepository repository;
+  private final Integer BOARD_SIZE = 4;
+  private final GameStateRepository repository;
 
   public GameStateService() {
     this.repository = new GameStateRepository();
@@ -178,7 +178,8 @@ public class GameStateService {
 
   private Integer sum(ArrayList<Integer> row) {
     if(row.size() < 2) return 0;
-    int newValue = 0;
+
+    int newValue;
     int partialScore = 0;
 
     for (int index = 0; index < row.size() - 1; index++) {
@@ -226,11 +227,9 @@ public class GameStateService {
 
 
   private boolean isWinner(List<ArrayList<Integer>> board) {
-
     boolean winner = false;
 
     for(int x = 0; x < BOARD_SIZE; x++) {
-
       for(int y = 0; y < BOARD_SIZE; y++) {
         winner = winner || board.get(x).get(y) == 2048;
       }
@@ -254,9 +253,11 @@ public class GameStateService {
     return emptyIndexes;
   }
 
-
   private void insertValueRandomInFreePosition(List<ArrayList<Integer>> board) {
     var emptyIndexes = getEmptyIndexes(board);
+
+    if(emptyIndexes.isEmpty()) return;
+
     var newValue = generateNumber();
 
     var coordinates =  (int) Math.floor(Math.random() * emptyIndexes.size());

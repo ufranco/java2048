@@ -5,19 +5,25 @@ import com.ufranco.java2048.backend.models.GameState;
 import java.util.Arrays;
 
 public class GameStateRepository {
-
   private GameState state;
 
   public GameState get() {
-    return state;
+    return deepCopy(state);
   }
 
   public GameState create() {
+    state = null;
     state = new GameState();
+    state.setBoard(generateNewBoard());
+    state.setMoves(0);
+    state.setGameOver(false);
+    state.setScore(0);
+
     return deepCopy(state);
   }
 
   public void update(GameState state) {
+    this.state = null;
     this.state = deepCopy(state);
 
     System.out.println( "stored as\n" +
@@ -38,12 +44,21 @@ public class GameStateRepository {
     Integer[][] deepCopiedBoard = new Integer[4][4];
 
     for (int x = 0; x < board.length; x++) {
-      for (int y = 0; y < board.length; y++) {
-        deepCopiedBoard[x][y] = board[x][y];
-      }
+      System.arraycopy(board[x], 0, deepCopiedBoard[x], 0, board.length);
     }
 
     newGameState.setBoard(deepCopiedBoard);
     return newGameState;
+  }
+
+  private Integer[][] generateNewBoard() {
+
+    Integer[][] board = new Integer[4][4];
+    for(int x = 0; x < board.length; x++) {
+      for(int y = 0; y < board.length; y++) {
+        board[x][y] = 0;
+      }
+    }
+    return board;
   }
 }

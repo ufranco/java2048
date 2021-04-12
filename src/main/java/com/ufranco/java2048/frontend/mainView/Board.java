@@ -29,15 +29,15 @@ public class Board {
 			var board = stateService.createGameState().getBoard();
 			int count = 0;
 
-			for (Integer[] integers : board) {
+				for (Integer[] integers : board) {
 				for (Integer integer : integers) {
-					tiles.add(new JLabel(integer.toString()));
+					tiles.add(new JLabel(integer == 0 ? "" : integer.toString()));
 
 					var label = tiles.get(count);
 					label.setIcon(emptyTile);
 					label.setOpaque(true);
 					label.setForeground(new Color(255, 255, 0));
-					label.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)));
+					label.setBorder(new MatteBorder(2, 2, 2, 2, new Color(0, 0, 0)));
 					label.setFont(new Font("Verdana", Font.BOLD, 20));
 					label.setHorizontalTextPosition(JLabel.CENTER);
 					label.setVerticalTextPosition(JLabel.CENTER);
@@ -50,13 +50,15 @@ public class Board {
     }
 
     public void updateBoard(Integer[][] boardValues, JPanel panel) {
+    		int count= 0;
         for (int x = 0; x < boardValues.length; x++) {
         	for(int y = 0; y < boardValues.length; y++) {
-	        	var label = (JLabel)panel.getComponent(x);
+	        	var label = (JLabel)panel.getComponent(count);
 	        	changeTile(label, boardValues[x][y]);
 	            int green = label.getForeground().getGreen() - 10;
 	            if (green > 0)
 	            	label.setForeground(new Color(255, green, 0));
+	            count++;
         	}
         }
 

@@ -1,11 +1,10 @@
 package com.ufranco.java2048.backend.models;
 
 public class Cell {
+	private int x;
+	private int y;
 
-	Integer x;
-	Integer y;
-
-	public Cell(Integer x, Integer y) {
+	public Cell(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
