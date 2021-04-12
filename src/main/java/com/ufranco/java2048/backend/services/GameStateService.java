@@ -16,8 +16,8 @@ public class GameStateService {
   GameStateRepository repository;
 
   public GameStateService(GameStateRepository repository) {
-    this.repository = repository;
-  }
+	    this.repository = new GameStateRepository();
+	  }
 
   public GameState getGameState() {
     var state = repository.create();
