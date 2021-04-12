@@ -1,47 +1,57 @@
 package com.ufranco.java2048.backend.models;
 
-import com.ufranco.java2048.backend.utils.Movement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameState {
-  private int[][] board;
-  private boolean gameOver;
-  private Integer moves;
+	Integer[][] board;
+	private boolean gameOver;
+	private Integer moves;
+	private Integer score;
+	private boolean winner;
 
+	public void setMoves(Integer moves) {
+		this.moves = moves;
+	}
 
-  public GameState() {
-    this.board = new int[4][4];
-    this.moves = 0;
-    this.gameOver = false;
-  }
+	public Integer getMoves() {
+		return moves;
+	}
 
-  public GameState(int[][] board, Integer moves) {
-        this.board = board;
-        this.moves = moves;
-      }
+	public void incrementMoves() {
+		this.moves++;
+	}
 
-  public Integer getMoves() {
-    return moves;
-  }
+	public Integer[][] getBoard() {
+		return this.board;
+	}
 
-  public void incrementMoves() {
-    this.moves++;
-  }
+	public void setBoard(Integer[][] board) {
+		this.board = board;
+	}
 
-  public int[][] getBoard() {
-    return this.board;
-  }
+	public boolean isGameOver() {
+		return this.gameOver;
+	}
 
-  public void setBoard(int[][] board) {
-    this.board = board;
-  }
+	public void setGameOver(boolean isGameOver) {
+		this.gameOver = isGameOver;
 
-  public boolean isGameOver() {
-    return this.gameOver;
-  }
+	}
 
-  public void setGameOver(boolean isGameOver) {
-    this.gameOver = isGameOver;
+	public Integer getScore() {
+		return score;
+	}
 
-  }
+	public void setScore(Integer score) {
+		this.score = score;
+	}
 
+	public boolean isWinner() {
+		return winner;
+	}
+
+	public void setWinner(boolean winner) {
+		this.winner = winner;
+	}
 }
