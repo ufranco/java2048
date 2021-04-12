@@ -24,14 +24,14 @@ public class Board {
 
     private void fillArray() {
         var tiles = new ArrayList<JLabel>();
-        Integer[][] board = stateService.getGameState().getBoard();
+        var board = stateService.getGameState().getBoard();
         int count = 0;
 
 			for (Integer[] integers : board) {
 				for (Integer integer : integers) {
 					tiles.add(new JLabel(integer.toString()));
 
-					JLabel label = tiles.get(count);
+					var label = tiles.get(count);
 					label.setIcon(emptyTile);
 					label.setOpaque(true);
 					label.setForeground(new Color(255, 255, 0));
@@ -52,43 +52,51 @@ public class Board {
         	for(int y = 0;y< values.length; y++) {
 	        	var label = (JLabel)panel.getComponent(x);
 	        	changeTile(label, values[x][y]);
-	            int green =label.getForeground().getGreen()-10;
+	            int green = label.getForeground().getGreen() - 10;
 	            if (green > 0)
 	            	label.setForeground(new Color(255, green, 0));
         	}
         }
 
     }
-    public void changeTile(JLabel l, Integer value) {
-    	if (!l.getText().equals(value.toString())) {
+    public void changeTile(JLabel label, Integer value) {
+    	if (!label.getText().equals(value.toString())) {
     		if(value == 0) {
-    			l.setText("");
-    			l.setIcon(CargarImagenes.cargarIcon("res\\tile0.png", 128, 128));
+    			label.setText("");
+    			label.setIcon(CargarImagenes.cargarIcon("res\\tile0.png", 128, 128));
     		}
     		else {
-    			l.setText(value.toString());
-    			l.setIcon(tile);
+    			label.setText(value.toString());
+    			label.setIcon(tile);
     		}
     	}
     }
-	public void moveTiles(KeyEvent KE, JPanel boardPanel) {
-		switch (KE.getKeyCode()) {
+	public void moveTiles(KeyEvent keyEvent, JPanel boardPanel) {
+		Movement movement = null;
+		var validKey = false;
+		switch (keyEvent.getKeyCode()) {
 			case KeyEvent.VK_W, KeyEvent.VK_UP -> {
-				Integer[][] board = stateService.updateGameState(Movement.UP).getBoard();
-				updateBoard(board, boardPanel);
+				movement = Movement.UP;
+				validKey = true;
 			}
 			case KeyEvent.VK_S, KeyEvent.VK_DOWN -> {
-				Integer[][] board = stateService.updateGameState(Movement.DOWN).getBoard();
-				updateBoard(board, boardPanel);
+				movement = Movement.DOWN;
+				validKey = true;
 			}
 			case KeyEvent.VK_A, KeyEvent.VK_LEFT -> {
-				Integer[][] board = stateService.updateGameState(Movement.LEFT).getBoard();
-				updateBoard(board, boardPanel);
+				movement = Movement.LEFT;
+				validKey = true;
 			}
 			case KeyEvent.VK_D, KeyEvent.VK_RIGHT -> {
-				Integer[][] board = stateService.updateGameState(Movement.RIGHT).getBoard();
-				updateBoard(board, boardPanel);
+				movement = Movement.RIGHT;
+				validKey = true;
 			}
+
+		}
+
+		if(validKey) {
+			var board = stateService.updateGameState(movement).getBoard();
+			updateBoard(board, boardPanel);
 		}
 	}
 

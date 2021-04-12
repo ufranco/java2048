@@ -14,7 +14,7 @@ public class Main {
 
 	private final JFrame frame;
 
-	Main(){
+	Main() {
 		frame = new JFrame();
 		frame.setTitle("2048");
 		frame.getContentPane().setSize(new Dimension(800, 600));
