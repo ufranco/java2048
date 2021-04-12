@@ -10,8 +10,11 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import static com.ufranco.java2048.backend.utils.Movement.*;
+import static java.awt.event.KeyEvent.*;
+
 public class Board {
-    private ArrayList<JLabel> tiles;
+    private final ArrayList<JLabel> tiles = new ArrayList<>();
     private final Icon tile = CargarImagenes.cargarIcon("res\\tile.png", 128, 128);
     private final Icon emptyTile = CargarImagenes.cargarIcon("res\\tile0.png", 128, 128);
     private final GameStateService stateService;
@@ -23,7 +26,6 @@ public class Board {
     }
 
     private void fillArray() {
-        var tiles = new ArrayList<JLabel>();
         var board = stateService.createGameState().getBoard();
         int count = 0;
 
@@ -75,20 +77,20 @@ public class Board {
 		Movement movement = null;
 		var validKey = false;
 		switch (keyEvent.getKeyCode()) {
-			case KeyEvent.VK_W, KeyEvent.VK_UP -> {
-				movement = Movement.UP;
+			case VK_W, VK_UP -> {
+				movement = UP;
 				validKey = true;
 			}
-			case KeyEvent.VK_S, KeyEvent.VK_DOWN -> {
-				movement = Movement.DOWN;
+			case VK_S, VK_DOWN -> {
+				movement = DOWN;
 				validKey = true;
 			}
-			case KeyEvent.VK_A, KeyEvent.VK_LEFT -> {
-				movement = Movement.LEFT;
+			case VK_A, VK_LEFT -> {
+				movement = LEFT;
 				validKey = true;
 			}
-			case KeyEvent.VK_D, KeyEvent.VK_RIGHT -> {
-				movement = Movement.RIGHT;
+			case VK_D, VK_RIGHT -> {
+				movement = RIGHT;
 				validKey = true;
 			}
 
