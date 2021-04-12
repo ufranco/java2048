@@ -16,13 +16,14 @@ import com.ufranco.java2048.frontend.utils.CargarImagenes;
 
 public class PantallaInicial {
 	private final JPanel panel;
-	public PantallaInicial(){
+	public PantallaInicial() {
 		panel = new JPanel();
 		panel.setBackground(Color.LIGHT_GRAY);
 		panel.setBounds(0, 0, 800, 600);
 		panel.setLayout(null);
 		setUI(panel);
 	}
+
 	public void setUI(JPanel panel) {
 		JButton newGameButton = new JButton("");
 		newGameButton.setIcon(CargarImagenes.cargarIcon("res\\juego nuevo.png",163, 70));

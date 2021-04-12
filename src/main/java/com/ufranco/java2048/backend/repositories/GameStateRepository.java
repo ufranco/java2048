@@ -2,8 +2,6 @@ package com.ufranco.java2048.backend.repositories;
 
 import com.ufranco.java2048.backend.models.GameState;
 
-import java.util.Arrays;
-
 public class GameStateRepository {
   private GameState state;
 
@@ -25,13 +23,6 @@ public class GameStateRepository {
   public void update(GameState state) {
     this.state = null;
     this.state = deepCopy(state);
-
-    System.out.println( "stored as\n" +
-      Arrays.toString(state.getBoard()[0])
-      +"\n"+Arrays.toString(state.getBoard()[1])
-      +"\n"+Arrays.toString(state.getBoard()[2])
-      +"\n"+Arrays.toString(state.getBoard()[3])+"\n"
-    );
   }
 
   public GameState deepCopy(GameState gameState) {

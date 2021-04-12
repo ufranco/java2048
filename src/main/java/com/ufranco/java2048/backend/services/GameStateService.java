@@ -24,43 +24,12 @@ public class GameStateService {
 
   public GameState createGameState() {
     var state = repository.create();
-
-/*    System.out.println( "post fetch\n" +
-      Arrays.toString(state.getBoard()[0])
-        +"\n"+Arrays.toString(state.getBoard()[1])
-        +"\n"+Arrays.toString(state.getBoard()[2])
-        +"\n"+Arrays.toString(state.getBoard()[3])+"\n"
-    );*/
-
-
     var gameBoard = arrayMatrixToListMatrix(state.getBoard());
 
-/*    System.out.println( "post transform 1\n" +
-      gameBoard.get(0)
-        +"\n"+gameBoard.get(1)
-        +"\n"+gameBoard.get(2)
-        +"\n"+gameBoard.get(3)+"\n"
-    );*/
-
-
     insertValueRandomInFreePosition(gameBoard);
     insertValueRandomInFreePosition(gameBoard);
-
-/*    System.out.println( "post transform 2\n" +
-      gameBoard.get(0)
-        +"\n"+gameBoard.get(1)
-        +"\n"+gameBoard.get(2)
-        +"\n"+gameBoard.get(3)+"\n"
-    );*/
 
     state.setBoard(listMatrixToArrayMatrix(gameBoard));
-
-/*    System.out.println( "pre persist \n" +
-      Arrays.toString(state.getBoard()[0])
-        +"\n"+Arrays.toString(state.getBoard()[1])
-        +"\n"+Arrays.toString(state.getBoard()[2])
-        +"\n"+Arrays.toString(state.getBoard()[3])+"\n"
-    );*/
 
     repository.update(state);
 
@@ -69,19 +38,13 @@ public class GameStateService {
 
   public GameState updateGameState(Movement movement) {
     var state = repository.get();
-/*
-    System.out.println( "post fetch\n" +
-      Arrays.toString(state.getBoard()[0])
-      +"\n"+Arrays.toString(state.getBoard()[1])
-      +"\n"+Arrays.toString(state.getBoard()[2])
-      +"\n"+Arrays.toString(state.getBoard()[3])+"\n"
-    );*/
 
     var gameBoard = arrayMatrixToListMatrix(state.getBoard());
     state.setScore(state.getScore() + applyMovement(gameBoard, movement));
 
     state.setGameOver(
-      isGameOver(listMatrixToArrayMatrix(gameBoard))
+      getEmptyIndexes(gameBoard).isEmpty()
+        && isGameOver(listMatrixToArrayMatrix(gameBoard))
     );
 
     if(state.isGameOver()){
@@ -91,13 +54,6 @@ public class GameStateService {
     }
 
     state.setBoard(listMatrixToArrayMatrix(gameBoard));
-
- /*   System.out.println( "pre persist\n" +
-      Arrays.toString(state.getBoard()[0])
-        +"\n"+Arrays.toString(state.getBoard()[1])
-        +"\n"+Arrays.toString(state.getBoard()[2])
-        +"\n"+Arrays.toString(state.getBoard()[3])+"\n"
-    );*/
     state.incrementMoves();
 
     repository.update(state);
@@ -208,9 +164,9 @@ public class GameStateService {
   }
 
   private boolean isGameOver(Integer[][] board) {
+    var movementUp = arrayMatrixToListMatrix(board);
     var movementLeft = arrayMatrixToListMatrix(board);
     var movementRight = arrayMatrixToListMatrix(board);
-    var movementUp = arrayMatrixToListMatrix(board);
     var movementDown = arrayMatrixToListMatrix(board);
 
     applyMovement(movementLeft, LEFT);
@@ -218,8 +174,7 @@ public class GameStateService {
     applyMovement(movementUp, UP);
     applyMovement(movementDown, DOWN);
 
-    return getEmptyIndexes(movementUp).isEmpty()
-      && movementDown.equals(movementUp)
+    return movementDown.equals(movementUp)
       && movementUp.equals(movementLeft)
       && movementLeft.equals(movementRight);
 
