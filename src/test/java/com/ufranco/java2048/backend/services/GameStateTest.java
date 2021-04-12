@@ -22,6 +22,7 @@ public class GameStateTest {
   @Mock
   GameStateRepository repository = new GameStateRepository();
 
+  @Spy
   @InjectMocks
   GameStateService service = new GameStateService(repository);
 

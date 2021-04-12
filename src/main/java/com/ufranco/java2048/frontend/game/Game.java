@@ -8,10 +8,10 @@ import java.awt.Rectangle;
 import javax.swing.JFrame;
 
 public class Game {
-	
-	
-	private JFrame frame;
-	
+
+
+	private final JFrame frame;
+
 	Game(){
 		frame = new JFrame();
 		frame.setTitle("2048");
@@ -27,14 +27,13 @@ public class Game {
 	}
 
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Game window = new Game();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+
+		EventQueue.invokeLater(() -> {
+			try {
+				Game window = new Game();
+				window.frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}

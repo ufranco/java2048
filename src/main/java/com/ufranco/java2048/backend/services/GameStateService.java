@@ -6,7 +6,6 @@ import com.ufranco.java2048.backend.repositories.GameStateRepository;
 import com.ufranco.java2048.backend.utils.Movement;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.ufranco.java2048.backend.utils.Movement.*;
 
@@ -15,9 +14,13 @@ public class GameStateService {
   public final Integer BOARD_SIZE = 4;
   GameStateRepository repository;
 
+  public GameStateService() {
+    this.repository = new GameStateRepository();
+  }
+
   public GameStateService(GameStateRepository repository) {
-	    this.repository = new GameStateRepository();
-	  }
+    this.repository = repository;
+  }
 
   public GameState getGameState() {
     var state = repository.create();
