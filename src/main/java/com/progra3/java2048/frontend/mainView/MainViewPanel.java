@@ -47,8 +47,8 @@ public class MainViewPanel {
     	mainPanel.requestFocusInWindow();
 			mainPanel.addKeyListener(new KeyAdapter() {
 
-			public void keyPressed(KeyEvent KE) {
-				moveTiles(KE, boardPanel);
+			public void keyPressed(KeyEvent keyEvent) {
+				moveTiles(keyEvent, boardPanel);
 			}
 		});
 
@@ -56,29 +56,16 @@ public class MainViewPanel {
 
 	public void moveTiles(KeyEvent keyEvent, JPanel boardPanel) {
 		Movement movement = null;
-		var validKey = false;
 
 		switch (keyEvent.getKeyCode()) {
-			case VK_W, VK_UP -> {
-				movement = UP;
-				validKey = true;
-			}
-			case VK_S, VK_DOWN -> {
-				movement = DOWN;
-				validKey = true;
-			}
-			case VK_A, VK_LEFT -> {
-				movement = LEFT;
-				validKey = true;
-			}
-			case VK_D, VK_RIGHT -> {
-				movement = RIGHT;
-				validKey = true;
-			}
+			case VK_W, VK_UP -> movement = UP;
+			case VK_S, VK_DOWN -> movement = DOWN;
+			case VK_A, VK_LEFT -> movement = LEFT;
+			case VK_D, VK_RIGHT -> movement = RIGHT;
 
 		}
 
-		if(!validKey) return;
+		if(movement == null) return;
 
 		var response = stateService.updateGameState(movement);
 		board.updateBoard(response.getBoard(), boardPanel);
