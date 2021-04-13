@@ -51,9 +51,10 @@ public class GameStateService {
     if(!getEmptyIndexes(gameBoard).isEmpty()) {
       insertRandomValueInFreePosition(gameBoard);
     }
-
-    state.setGameOver(isGameOver(listMatrixToArrayMatrix(gameBoard)));
     state.setWinner(isWinner(gameBoard));
+
+    state.setGameOver( state.isWinner() || isGameOver(listMatrixToArrayMatrix(gameBoard)));
+
 
     state.setBoard(listMatrixToArrayMatrix(gameBoard));
     state.incrementMoves();
