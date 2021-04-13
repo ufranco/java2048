@@ -1,44 +1,49 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.ufranco</groupId>
+    <groupId>com.progra3</groupId>
     <artifactId>java2048</artifactId>
     <version>1.0.0</version>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>15</maven.compiler.source>
-        <maven.compiler.target>15</maven.compiler.target>
+        <java.version>16</java.version>
     </properties>
 
-    <dependencies>
+    <developers>
+        <developer>
+            <id>Ulises Javier Franco</id>
+            <roles>
+                <role>Back developer</role>
+            </roles>
+            <url>github.com/ufranco</url>
+        </developer>
 
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>15</version>
-        </dependency>
+        <developer>
+            <id>Gastón Ezequiel Mansilla</id>
+            <roles>
+               <role>Back developer</role>
+            </roles>
+            <url>github.com/SrParzival</url>
+        </developer>
 
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>15</version>
-        </dependency>
+        <developer>
+            <id>Victor Santiago Florentin</id>
+            <roles>
+                <role>Front developer</role>
+            </roles>
+            <url>github.com/victorFlorentin</url>
+        </developer>
 
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.13</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <version>3.8.0</version>
-            <scope>test</scope>
-        </dependency>
-
-    </dependencies>
+        <developer>
+            <id>Martín Leguizamon</id>
+            <roles>
+                <role>Front developer</role>
+            </roles>
+            <url>github.com/legui04</url>
+        </developer>
+    </developers>
 
     <build>
         <plugins>
@@ -47,7 +52,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <release>${maven.compiler.target}</release>
+                    <release>${java.version}</release>
                 </configuration>
             </plugin>
         </plugins>
