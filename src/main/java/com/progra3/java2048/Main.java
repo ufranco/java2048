@@ -1,6 +1,6 @@
-package com.ufranco.java2048;
+package com.progra3.java2048;
 
-import com.ufranco.java2048.frontend.game.PantallaInicial;
+import com.progra3.java2048.frontend.game.MainMenu;
 
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
@@ -10,7 +10,6 @@ import java.awt.Rectangle;
 import javax.swing.JFrame;
 
 public class Main {
-
 
 	private final JFrame frame;
 
@@ -24,7 +23,7 @@ public class Main {
 		frame.getContentPane().setLayout(null);
 		frame.setBounds(100, 100, 818, 641);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		PantallaInicial pi = new PantallaInicial();
+		MainMenu pi = new MainMenu();
 		frame.getContentPane().add(pi.getPanel());
 	}
 

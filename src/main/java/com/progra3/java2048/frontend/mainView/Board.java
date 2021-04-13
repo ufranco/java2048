@@ -1,32 +1,23 @@
-package com.ufranco.java2048.frontend.mainView;
+package com.progra3.java2048.frontend.mainView;
 
-import com.ufranco.java2048.backend.services.GameStateService;
-import com.ufranco.java2048.backend.utils.Movement;
-import com.ufranco.java2048.frontend.utils.CargarImagenes;
+import com.progra3.java2048.frontend.utils.ImageLoader;
 
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-
-import static com.ufranco.java2048.backend.utils.Movement.*;
-import static java.awt.event.KeyEvent.*;
 
 public class Board {
 	private final ArrayList<JLabel> tiles = new ArrayList<>();
-	private final Icon tile = CargarImagenes.cargarIcon("res\\tile.png", 128, 128);
-	private final Icon emptyTile = CargarImagenes.cargarIcon("res\\tile0.png", 128, 128);
-	private final GameStateService stateService;
+	private final Icon tile = ImageLoader.loadIcon("res\\tile.png", 128, 128);
+	private final Icon emptyTile = ImageLoader.loadIcon("res\\tile0.png", 128, 128);
 
-	Board(JPanel panel, GameStateService stateService){
-		this.stateService = stateService;
-		fillArray();
+	Board(JPanel panel, Integer[][] board){
+		fillArray(board);
 		createBoard(panel);
 	}
 
-	private void fillArray() {
-		var board = stateService.createGameState().getBoard();
+	private void fillArray(Integer[][] board) {
 		int count = 0;
 
 			for (Integer[] integers : board) {
@@ -66,7 +57,7 @@ public class Board {
 		if (!label.getText().equals(value.toString())) {
 			if(value == 0) {
 				label.setText("");
-				label.setIcon(CargarImagenes.cargarIcon("res\\tile0.png", 128, 128));
+				label.setIcon(ImageLoader.loadIcon("res\\tile0.png", 128, 128));
 			} else {
 				label.setText(value.toString());
 				label.setIcon(tile);

@@ -1,18 +1,18 @@
-package com.ufranco.java2048.backend.services;
+package com.progra3.java2048.backend.services;
 
-import com.ufranco.java2048.backend.models.Cell;
-import com.ufranco.java2048.backend.models.GameState;
-import com.ufranco.java2048.backend.repositories.GameStateRepository;
-import com.ufranco.java2048.backend.utils.Movement;
+import com.progra3.java2048.backend.models.GameState;
+import com.progra3.java2048.backend.repositories.GameStateRepository;
+import com.progra3.java2048.backend.models.Cell;
+import com.progra3.java2048.backend.utils.Movement;
 
 import java.util.*;
 
-import static com.ufranco.java2048.backend.utils.Movement.*;
+import static com.progra3.java2048.backend.utils.Movement.*;
 
 public class GameStateService {
-
-  private final Integer BOARD_SIZE = 4;
   private final GameStateRepository repository;
+  private final Integer BOARD_SIZE = 4;
+  private int partialScore = 0;
 
   public GameStateService() {
     this.repository = new GameStateRepository();
@@ -20,12 +20,14 @@ public class GameStateService {
 
   public GameState createGameState() {
     var state = repository.create();
+    partialScore = 0;
     var gameBoard = arrayMatrixToListMatrix(state.getBoard());
 
-    insertValueRandomInFreePosition(gameBoard);
-    insertValueRandomInFreePosition(gameBoard);
+    insertRandomValueInFreePosition(gameBoard);
+    insertRandomValueInFreePosition(gameBoard);
 
     state.setBoard(listMatrixToArrayMatrix(gameBoard));
+    state.setScore(partialScore);
 
     repository.update(state);
 
@@ -38,24 +40,22 @@ public class GameStateService {
     if (state.isGameOver()) return state;
 
     var gameBoard = arrayMatrixToListMatrix(state.getBoard());
-    state.setScore(state.getScore() + applyMovement(gameBoard, movement));
+    applyMovement(gameBoard, movement);
 
-    state.setGameOver(
-      getEmptyIndexes(gameBoard).isEmpty()
-      && isGameOver(listMatrixToArrayMatrix(gameBoard))
-    );
-
-    if(state.isGameOver()) {
-      state.setWinner(isWinner(gameBoard));
-    } else {
-      insertValueRandomInFreePosition(gameBoard);
+    if(!getEmptyIndexes(gameBoard).isEmpty()) {
+      insertRandomValueInFreePosition(gameBoard);
     }
+
+    state.setGameOver(isGameOver(listMatrixToArrayMatrix(gameBoard)));
+    state.setWinner(isWinner(gameBoard));
 
     state.setBoard(listMatrixToArrayMatrix(gameBoard));
     state.incrementMoves();
+    state.setScore(partialScore);
 
     repository.update(state);
 
+    System.out.println(state);
     return state;
   }
 
@@ -72,27 +72,26 @@ public class GameStateService {
       .toArray(new Integer[][]{});
   }
 
-  private Integer applyMovement(List<ArrayList<Integer>> board, Movement move) {
-    Integer partialScore = 0;
+  private void applyMovement(List<ArrayList<Integer>> board, Movement move) {
 
     if (move.equals(RIGHT) || move.equals(LEFT)) {
 
       for (int x = 0; x < BOARD_SIZE; x++) {
         removeAllZeroes(board.get(x));
-        partialScore += sum(board.get(x));
+        sum(board.get(x));
         completeRow(board.get(x), move);
       }
     } else {
       var newColumn = new ArrayList<Integer>();
       for (int y = 0; y < BOARD_SIZE; y++) {
+
         newColumn = upOrDown(board, move, y);
+
         for (int x = 0; x < board.get(y).size(); x++) {
           board.get(x).set(y, newColumn.get(x));
         }
       }
     }
-
-    return partialScore;
   }
 
   private ArrayList<Integer> upOrDown(
@@ -101,8 +100,6 @@ public class GameStateService {
     int column
   ) {
 
-    Integer partialScore = 0;
-
     var newColumn = new ArrayList<Integer>();
 
     for (int row = 0; row < BOARD_SIZE; row++) {
@@ -110,7 +107,7 @@ public class GameStateService {
     }
 
     removeAllZeroes(newColumn);
-    partialScore += sum(newColumn);
+    sum(newColumn);
 
     if (dir.equals(UP)) {
       completeRow(newColumn, LEFT);
@@ -127,32 +124,24 @@ public class GameStateService {
     }
   }
 
-  private Integer sum(ArrayList<Integer> row) {
-    if(row.size() < 2) return 0;
-
-    int newValue;
-    int partialScore = 0;
+  private void sum(ArrayList<Integer> row) {
 
     for (int index = 0; index < row.size() - 1; index++) {
       var value = row.get(index);
       var consequentValue = row.get(index + 1);
 
       if (value.equals(consequentValue)) {
-        newValue = value + consequentValue;
-        partialScore += newValue;
+        partialScore += (value * 2);
         row.remove(index + 1);
-        row.set(index, newValue);
+        row.set(index, value * 2);
       }
     }
-
-    return partialScore;
   }
 
   private void completeRow(ArrayList<Integer> row, Movement move) {
     while (row.size() < BOARD_SIZE) {
       if (move.equals(RIGHT)) row.add(0, 0);
       else row.add(0);
-
     }
   }
 
@@ -175,7 +164,7 @@ public class GameStateService {
 
 
   private boolean isWinner(List<ArrayList<Integer>> board) {
-    boolean winner = false;
+    var winner = false;
 
     for(int x = 0; x < BOARD_SIZE; x++) {
       for(int y = 0; y < BOARD_SIZE; y++) {
@@ -201,17 +190,17 @@ public class GameStateService {
     return emptyIndexes;
   }
 
-  private void insertValueRandomInFreePosition(List<ArrayList<Integer>> board) {
-    var emptyIndexes = getEmptyIndexes(board);
+  private void insertRandomValueInFreePosition(List<ArrayList<Integer>> board) {
+    var emptyCells = getEmptyIndexes(board);
 
-    if(emptyIndexes.isEmpty()) return;
+    if(emptyCells.isEmpty()) return;
 
     var newValue = generateNumber();
 
-    var coordinates =  (int) Math.floor(Math.random() * emptyIndexes.size());
-
-    int x = emptyIndexes.get(coordinates).getX();
-    int y = emptyIndexes.get(coordinates).getY();
+    var coordinates =  (int) Math.floor(Math.random() * emptyCells.size());
+    var emptyCell = emptyCells.get(coordinates);
+    var x = emptyCell.x();
+    var y = emptyCell.y();
 
     if (board.get(x).get(y) == 0) {
       board.get(x).set(y, newValue);
@@ -220,7 +209,7 @@ public class GameStateService {
   }
 
   private Integer generateNumber() {
-    return Math.random() * 10 <= 9 ? 2 : 4;
+    return Math.random() * 10.00 < 9 ? 2 : 4;
   }
 
 }
