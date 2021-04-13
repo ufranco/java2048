@@ -1,4 +1,4 @@
-package com.ufranco.java2048.backend.utils;
+package com.progra3.java2048.backend.utils;
 
 public enum Movement {
   UP,

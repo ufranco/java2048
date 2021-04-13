@@ -1,15 +1,16 @@
-package com.ufranco.java2048.frontend.mainView;
+package com.progra3.java2048.frontend.mainView;
 
-import com.ufranco.java2048.backend.services.GameStateService;
-import com.ufranco.java2048.backend.utils.Movement;
+import com.progra3.java2048.backend.models.GameState;
+import com.progra3.java2048.backend.services.GameStateService;
+import com.progra3.java2048.backend.utils.Movement;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import static com.ufranco.java2048.backend.utils.Movement.*;
-import static com.ufranco.java2048.backend.utils.Movement.RIGHT;
+import static com.progra3.java2048.backend.utils.Movement.*;
+import static com.progra3.java2048.backend.utils.Movement.RIGHT;
 import static java.awt.event.KeyEvent.*;
 import static java.awt.event.KeyEvent.VK_RIGHT;
 
@@ -26,6 +27,7 @@ public class MainViewPanel {
 
 	public MainViewPanel() {
 		stateService = new GameStateService();
+		GameState state = stateService.createGameState();
 		mainPanel = new JPanel();
 		mainPanel.setBounds(0, 0, 800, 600);
 		mainPanel.setLayout(null);
@@ -36,7 +38,7 @@ public class MainViewPanel {
 		boardPanel.setBounds(144, 32, 512, 512);
 		boardPanel.setBackground(new Color(70, 40, 0));
 		mainPanel.add(boardPanel);
-		board = new Board(boardPanel, stateService);
+		board = new Board(boardPanel, state.getBoard());
 		addListener();
 	}
 
@@ -76,19 +78,19 @@ public class MainViewPanel {
 
 		}
 
-		if(validKey) {
-			var response = stateService.updateGameState(movement);
-			board.updateBoard(response.getBoard(), boardPanel);
+		if(!validKey) return;
 
-			displayScore(response.getScore());
+		var response = stateService.updateGameState(movement);
+		board.updateBoard(response.getBoard(), boardPanel);
 
-			displayMoveCount(response.getMoveCount());
+		displayScore(response.getScore());
 
-			if(response.isGameOver()) {
-				if (response.isWinner()) displayWinPanel();
-			 	else displayGameOver();
+		displayMoveCount(response.getMoveCount());
 
-			}
+		if(response.isGameOver()) {
+			if (response.isWinner()) displayWinPanel();
+			else displayGameOver();
+
 		}
 	}
 

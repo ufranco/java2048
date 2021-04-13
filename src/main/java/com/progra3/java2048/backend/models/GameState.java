@@ -1,4 +1,4 @@
-package com.ufranco.java2048.backend.models;
+package com.progra3.java2048.backend.models;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;

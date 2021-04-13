@@ -1,6 +1,6 @@
-package com.ufranco.java2048.backend.repositories;
+package com.progra3.java2048.backend.repositories;
 
-import com.ufranco.java2048.backend.models.GameState;
+import com.progra3.java2048.backend.models.GameState;
 
 public class GameStateRepository {
   private GameState state;

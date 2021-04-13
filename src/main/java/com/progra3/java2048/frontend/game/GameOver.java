@@ -1,4 +1,4 @@
-package com.ufranco.java2048.frontend.game;
+package com.progra3.java2048.frontend.game;
 
 
 import java.awt.event.KeyAdapter;
@@ -42,7 +42,7 @@ public class GameOver {
 		});
 	}
 	private void backToMainMenu() {
-		PantallaInicial pi = new PantallaInicial();
+		MainMenu pi = new MainMenu();
 		panel.getParent().add(pi.getPanel());
 
 		panel.setVisible(false);
