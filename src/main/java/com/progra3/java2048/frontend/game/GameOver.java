@@ -39,13 +39,13 @@ public class GameOver {
     panel.add(goBackButton);
 
     JLabel scoreLabel = new JLabel("Puntaje final: "+score);
-    scoreLabel.setForeground(new Color(191, 157, 97));
+    scoreLabel.setForeground(new Color(231, 196, 146));
     scoreLabel.setFont(new Font("Verdana", Font.BOLD, 18));
-    scoreLabel.setBounds(530, 303, 300, 40);
+    scoreLabel.setBounds(500, 303, 300, 40);
     panel.add(scoreLabel);
 
     JLabel movesLabel = new JLabel("Movimientos: "+Movements);
-    movesLabel.setForeground(new Color(191, 157, 97));
+    movesLabel.setForeground(new Color(231, 196, 146));
     movesLabel.setFont(new Font("Verdana", Font.BOLD, 18));
     movesLabel.setBounds(120, 303, 300, 40);
     panel.add(movesLabel);

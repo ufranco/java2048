@@ -39,12 +39,14 @@ public class MainViewPanel {
 
     movesLabel = new JLabel("Movimientos: 0");
     movesLabel.setForeground(Color.yellow);
-    movesLabel.setBounds(10, 11, 106, 14);
+    movesLabel.setBounds(10, 11, 150, 14);
+    movesLabel.setFont(new Font("Verdana", Font.BOLD, 14));
     mainPanel.add(movesLabel);
 
     scoreLabel = new JLabel("Puntaje: 0");
     scoreLabel.setForeground(Color.yellow);
-    scoreLabel.setBounds(126, 11, 177, 14);
+    scoreLabel.setBounds(150, 11, 177, 14);
+    scoreLabel.setFont(new Font("Verdana", Font.BOLD, 14));
     mainPanel.add(scoreLabel);
 
     boardPanel = new JPanel();
