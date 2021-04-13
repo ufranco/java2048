@@ -42,6 +42,12 @@ public class GameStateService {
     var gameBoard = arrayMatrixToListMatrix(state.getBoard());
     applyMovement(gameBoard, movement);
 
+
+    if(gameBoard.equals(
+      arrayMatrixToListMatrix(state.getBoard())
+    )) return state;
+
+
     if(!getEmptyIndexes(gameBoard).isEmpty()) {
       insertRandomValueInFreePosition(gameBoard);
     }
@@ -54,8 +60,6 @@ public class GameStateService {
     state.setScore(partialScore);
 
     repository.update(state);
-
-    System.out.println(state);
     return state;
   }
 
