@@ -40,7 +40,7 @@ public class GameStateService {
     if (state.isGameOver()) return state;
 
     var gameBoard = arrayMatrixToListMatrix(state.getBoard());
-    applyMovement(gameBoard, movement);
+    applyMovement(gameBoard, movement,false);
 
 
     if(gameBoard.equals(
@@ -75,22 +75,20 @@ public class GameStateService {
       .map(a -> a.toArray(new Integer[]{}))
       .toList()
       .toArray(new Integer[][]{});
-  }
-
-  private void applyMovement(List<ArrayList<Integer>> board, Movement move) {
+  } 
+  private void applyMovement(List<ArrayList<Integer>> board, Movement move, boolean validateGameOver) {
 
     if (move.equals(RIGHT) || move.equals(LEFT)) {
 
       for (int x = 0; x < BOARD_SIZE; x++) {
         removeAllZeroes(board.get(x));
-        sum(board.get(x));
+        sum(board.get(x),validateGameOver);
         completeRow(board.get(x), move);
       }
     } else {
       var newColumn = new ArrayList<Integer>();
       for (int y = 0; y < BOARD_SIZE; y++) {
-
-        newColumn = upOrDown(board, move, y);
+        newColumn = upOrDown(board, move, y,validateGameOver);
 
         for (int x = 0; x < board.get(y).size(); x++) {
           board.get(x).set(y, newColumn.get(x));
@@ -102,7 +100,8 @@ public class GameStateService {
   private ArrayList<Integer> upOrDown(
     List<ArrayList<Integer>> board,
     Movement dir,
-    int column
+    int column,
+    boolean validateGameOver
   ) {
 
     var newColumn = new ArrayList<Integer>();
@@ -112,7 +111,7 @@ public class GameStateService {
     }
 
     removeAllZeroes(newColumn);
-    sum(newColumn);
+    sum(newColumn,validateGameOver);
 
     if (dir.equals(UP)) {
       completeRow(newColumn, LEFT);
@@ -129,14 +128,14 @@ public class GameStateService {
     }
   }
 
-  private void sum(ArrayList<Integer> row) {
+  private void sum(ArrayList<Integer> row,boolean ValidateGameOver) {
 
     for (int index = 0; index < row.size() - 1; index++) {
       var value = row.get(index);
       var consequentValue = row.get(index + 1);
 
       if (value.equals(consequentValue)) {
-        partialScore += (value * 2);
+        if(ValidateGameOver == false) partialScore += (value * 2);
         row.remove(index + 1);
         row.set(index, value * 2);
       }
@@ -156,10 +155,10 @@ public class GameStateService {
     var movementRight = arrayMatrixToListMatrix(board);
     var movementDown = arrayMatrixToListMatrix(board);
 
-    applyMovement(movementLeft, LEFT);
-    applyMovement(movementRight, RIGHT);
-    applyMovement(movementUp, UP);
-    applyMovement(movementDown, DOWN);
+    applyMovement(movementLeft, LEFT, true);
+    applyMovement(movementRight, RIGHT,true);
+    applyMovement(movementUp, UP,true);
+    applyMovement(movementDown, DOWN,true);
 
     return movementDown.equals(movementUp)
       && movementUp.equals(movementLeft)

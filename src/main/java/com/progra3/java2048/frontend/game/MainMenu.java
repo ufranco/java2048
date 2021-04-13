@@ -23,10 +23,11 @@ public class MainMenu {
 		panel.setLayout(null);
 		setUI(panel);
 	}
-
-	public void setUI(JPanel panel) {
+  
+	public void setUI(JPanel panel){
 		JButton newGameButton = new JButton("");
 		newGameButton.setIcon(ImageLoader.loadIcon("res\\juego nuevo.png",163, 70));
+		newGameButton.setBorderPainted(false);
 		newGameButton.setForeground(Color.BLACK);
 		newGameButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -34,13 +35,7 @@ public class MainMenu {
 				empezarPartida(panel);
 			}
 		});
-		newGameButton.addKeyListener(new KeyAdapter() {
 
-			@Override
-			public void keyPressed(KeyEvent KE) {;
-				empezarPartida(panel);
-			}
-		});
 		newGameButton.setFont(new Font("customFont", Font.BOLD | Font.ITALIC, 15));
 		newGameButton.setBackground(Color.LIGHT_GRAY);
 		newGameButton.setBounds(332, 279, 163, 70);
@@ -63,7 +58,12 @@ public class MainMenu {
 		ImagenCadenaInferior.setIcon(ImageLoader.loadIcon("res\\parte inferior.png",161, 127));
 		ImagenCadenaInferior.setBounds(639, 473, 161, 127);
 		panel.add(ImagenCadenaInferior);
-	}
+    JLabel background = new JLabel();
+    background.setIcon(ImageLoader.loadIcon("res\\background.jpg",800,600));
+    background.setBounds(0,0,800,600);
+    panel.add(background);
+
+  }
 	public void empezarPartida(JPanel panel) {
 		MainViewPanel mv = new MainViewPanel();
 		panel.getParent().add(mv.getPanel());
