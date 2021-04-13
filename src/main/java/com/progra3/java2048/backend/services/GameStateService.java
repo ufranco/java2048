@@ -75,8 +75,7 @@ public class GameStateService {
       .map(a -> a.toArray(new Integer[]{}))
       .toList()
       .toArray(new Integer[][]{});
-  }
-
+  } 
   private void applyMovement(List<ArrayList<Integer>> board, Movement move, boolean validateGameOver) {
 
     if (move.equals(RIGHT) || move.equals(LEFT)) {
@@ -89,7 +88,6 @@ public class GameStateService {
     } else {
       var newColumn = new ArrayList<Integer>();
       for (int y = 0; y < BOARD_SIZE; y++) {
-
         newColumn = upOrDown(board, move, y,validateGameOver);
 
         for (int x = 0; x < board.get(y).size(); x++) {
@@ -123,7 +121,6 @@ public class GameStateService {
 
     return newColumn;
   }
-
 
   private void removeAllZeroes(ArrayList<Integer> list) {
     while (list.contains(0)) {

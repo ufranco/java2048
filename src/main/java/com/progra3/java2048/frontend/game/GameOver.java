@@ -1,9 +1,9 @@
 package com.progra3.java2048.frontend.game;
 
-
 import com.progra3.java2048.frontend.utils.ImageLoader;
 
 import java.awt.*;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -74,3 +74,4 @@ public class GameOver {
     return panel;
   }
 }
+

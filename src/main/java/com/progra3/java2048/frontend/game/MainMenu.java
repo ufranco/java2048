@@ -23,7 +23,7 @@ public class MainMenu {
 		panel.setLayout(null);
 		setUI(panel);
 	}
-
+  
 	public void setUI(JPanel panel){
 		JButton newGameButton = new JButton("");
 		newGameButton.setIcon(ImageLoader.loadIcon("res\\juego nuevo.png",163, 70));
@@ -58,7 +58,6 @@ public class MainMenu {
 		ImagenCadenaInferior.setIcon(ImageLoader.loadIcon("res\\parte inferior.png",161, 127));
 		ImagenCadenaInferior.setBounds(639, 473, 161, 127);
 		panel.add(ImagenCadenaInferior);
-
     JLabel background = new JLabel();
     background.setIcon(ImageLoader.loadIcon("res\\background.jpg",800,600));
     background.setBounds(0,0,800,600);
