@@ -42,20 +42,25 @@ public class GameStateService {
     var gameBoard = arrayMatrixToListMatrix(state.getBoard());
     applyMovement(gameBoard, movement);
 
+
+    if(gameBoard.equals(
+      arrayMatrixToListMatrix(state.getBoard())
+    )) return state;
+
+
     if(!getEmptyIndexes(gameBoard).isEmpty()) {
       insertRandomValueInFreePosition(gameBoard);
     }
-
-    state.setGameOver(isGameOver(listMatrixToArrayMatrix(gameBoard)));
     state.setWinner(isWinner(gameBoard));
+
+    state.setGameOver( state.isWinner() || isGameOver(listMatrixToArrayMatrix(gameBoard)));
+
 
     state.setBoard(listMatrixToArrayMatrix(gameBoard));
     state.incrementMoves();
     state.setScore(partialScore);
 
     repository.update(state);
-
-    System.out.println(state);
     return state;
   }
 
@@ -168,7 +173,7 @@ public class GameStateService {
 
     for(int x = 0; x < BOARD_SIZE; x++) {
       for(int y = 0; y < BOARD_SIZE; y++) {
-        winner = winner || board.get(x).get(y) == 2048;
+        winner = winner || board.get(x).get(y) == 32;
       }
     }
     return winner;

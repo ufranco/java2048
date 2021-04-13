@@ -29,7 +29,7 @@ public class Board {
 				label.setOpaque(true);
 				label.setForeground(new Color(255, 255, 0));
 				label.setBorder(new MatteBorder(2, 2, 2, 2, new Color(0, 0, 0)));
-				label.setFont(new Font("Verdana", Font.BOLD, 20));
+				label.setFont(new Font("Verdana", Font.BOLD, 30));
 				label.setHorizontalTextPosition(JLabel.CENTER);
 				label.setVerticalTextPosition(JLabel.CENTER);
 				count++;
@@ -46,9 +46,6 @@ public class Board {
 			for (Integer value : boardValue) {
 				var label = (JLabel) panel.getComponent(count);
 				changeTile(label, value);
-				int green = label.getForeground().getGreen() - 10;
-				if (green > 0)
-					label.setForeground(new Color(255, green, 0));
 				count++;
 			}
 		}

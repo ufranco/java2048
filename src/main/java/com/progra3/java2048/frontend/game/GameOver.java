@@ -1,6 +1,8 @@
 package com.progra3.java2048.frontend.game;
 
 
+import com.progra3.java2048.frontend.utils.ImageLoader;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -19,27 +21,39 @@ public class GameOver {
   public GameOver(Integer score, Integer Movements) {
     panel = new JPanel();
     panel.setBounds(0, 0, 800, 600);
+    panel.setBackground(new Color(74, 74, 94));
     panel.setLayout(null);
 
-    gameOverLabel = new JLabel("GAME OVER JUE JUE");
+    gameOverLabel = new JLabel("");
+    gameOverLabel.setIcon(ImageLoader.loadIcon("res\\derrota.png",418,173));
     gameOverLabel.setBounds(200, 114, 418, 173);
     panel.add(gameOverLabel);
 
-    goBackButton = new JButton("Volver al inicio");
+    goBackButton = new JButton("");
+    goBackButton.setIcon(ImageLoader.loadIcon("res\\volver a menu.png",163,70));
     goBackButton.setForeground(Color.BLACK);
+    goBackButton.setBorderPainted(false);
     goBackButton.setFont(new Font("customFont", Font.BOLD | Font.ITALIC, 15));
-    goBackButton.setBounds(299, 347, 163, 70);
+    goBackButton.setBounds(299, 447, 163, 70);
     goBackButton.setBackground(Color.LIGHT_GRAY);
     panel.add(goBackButton);
 
-    JLabel scoreLabel = new JLabel("Puntaje: "+score);
-    scoreLabel.setBounds(485, 303, 166, 14);
+    JLabel scoreLabel = new JLabel("Puntaje final: "+score);
+    scoreLabel.setForeground(new Color(191, 157, 97));
+    scoreLabel.setFont(new Font("Verdana", Font.BOLD, 18));
+    scoreLabel.setBounds(530, 303, 300, 40);
     panel.add(scoreLabel);
 
     JLabel movesLabel = new JLabel("Movimientos: "+Movements);
-    movesLabel.setBounds(73, 303, 172, 14);
+    movesLabel.setForeground(new Color(191, 157, 97));
+    movesLabel.setFont(new Font("Verdana", Font.BOLD, 18));
+    movesLabel.setBounds(120, 303, 300, 40);
     panel.add(movesLabel);
 
+    JLabel background = new JLabel();
+    background.setIcon(ImageLoader.loadIcon("res\\backgroundGO.jpg",800,600));
+    background.setBounds(0,0,800,600);
+    panel.add(background);
     goBackButton.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseClicked(MouseEvent arg0) {
@@ -50,9 +64,10 @@ public class GameOver {
 
   private void backToMainMenu() {
     MainMenu pi = new MainMenu();
-    panel.getParent().add(pi.getPanel());
-
+    Container parent = panel.getParent();
     panel.setVisible(false);
+    parent.removeAll();
+    parent.add(pi.getPanel());
   }
 
   public JPanel getPanel() {
